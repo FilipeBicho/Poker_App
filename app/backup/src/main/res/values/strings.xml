@@ -1,0 +1,11 @@
+<resources>
+    <!-- App name -->
+    <string name="app_name">Poker</string>
+    <!-- Title in the first page -->
+    <string name="title">Head\'s Texas Hold\'em</string>
+    <!-- Hint in the box for the user insert his name in the first page -->
+    <string name="hintName">insert your name...</string>
+    <!-- Text in the first page button -->
+    <string name="buttonStart">Start</string>
+
+</resources>

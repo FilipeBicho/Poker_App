@@ -1,0 +1,579 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        style="@style/background"
+        android:src="@drawable/game" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/game_title"
+                        style="@style/game_text"
+                        android:layout_margin="30dp"
+                        android:fontFamily="@font/abril_fatface"
+                        android:textSize="30sp" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+                            <TextView
+                                android:id="@+id/opponent_name"
+                                style="@style/card_text"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentTop="false"
+                                android:layout_alignParentRight="true"
+                                android:layout_margin="5dp"
+                                android:text="Opponent"
+                                android:textSize="22sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/opponent_money"
+                                style="@style/card_text"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentTop="false"
+                                android:layout_alignParentLeft="true"
+                                android:layout_margin="5dp"
+                                android:text="1500€"
+                                android:textSize="22sp" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/card_opponent1"
+                                style="@style/game_card"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="5dp"
+                                android:src="@drawable/_00" />
+
+                            <TextView
+                                android:id="@+id/opponent_odds"
+                                style="@style/odds"
+                                android:layout_toLeftOf="@id/card_opponent1"
+                                android:layout_marginRight="10dp"
+                                android:layout_alignParentBottom="true"
+                                android:textSize="22sp"
+                                />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/card_opponent2"
+                                style="@style/game_card"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="5dp"
+                                android:src="@drawable/_01" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.6">
+
+                            <ImageView
+                                android:id="@+id/opponent_dealer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:src="@drawable/dealer"
+                                android:layout_marginLeft="50dp"/>
+
+                            <TextView
+                                style="@style/card_text"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_margin="5dp"
+                                android:text="Bet:"
+                                android:textSize="22sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/opponent_bet"
+                                style="@style/card_text"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_margin="5dp"
+                                android:textSize="22sp" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/game_action"
+                        style="@style/game_text"
+                        android:layout_marginTop="20sp"
+                        android:fontFamily="@font/abril_fatface"
+                        android:text="Username make ***** of ** €"
+                        android:textSize="22sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"></RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7">
+
+                        <TextView
+                            android:id="@+id/opponent_ranking"
+                            style="@style/card_text"
+                            android:text="Royal Straight Flush"
+                            android:textSize="22sp"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"
+                        android:orientation="horizontal">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.2">
+                            <ImageView
+                                android:id="@+id/card_flop1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/_110"
+                                />
+                            <ImageView
+                                android:id="@+id/card_flop2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/card_flop1"
+                                android:layout_marginLeft="20dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/_100"
+                                />
+
+                            <ImageView
+                                android:id="@+id/card_flop3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_toRightOf="@+id/card_flop2"
+                                android:layout_marginLeft="20dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/_90"
+                                />
+
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.4">
+
+                            <ImageView
+                                android:id="@+id/card_turn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/_80"
+                                />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.4">
+                            <ImageView
+                                android:id="@+id/card_river"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/_70"
+                                />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.7">
+
+                        <TextView
+                            android:id="@+id/player_ranking"
+                            style="@style/card_text"
+                            android:text="Royal Straight Flush"
+                            android:textSize="22sp"/>
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.45">
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.4" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.6">
+
+                        <ScrollView
+                            style="@style/game_summary"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="2dp">
+
+                            <TextView
+                                android:id="@+id/summary"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+
+                        </ScrollView>
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.6">
+
+                            <TextView
+                                style="@style/card_text"
+                                android:layout_alignParentTop="false"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_margin="5dp"
+                                android:text="Bet:"
+                                android:textSize="22sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/player_bet"
+                                style="@style/card_text"
+                                android:layout_alignParentTop="false"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_margin="5dp"
+                                android:textSize="22sp" />
+                            <ImageView
+                                android:id="@+id/player_dealer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="50dp"
+                                android:src="@drawable/dealer" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.4"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/card_player1"
+                                style="@style/game_card"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="5dp"
+                                android:src="@drawable/_120" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/card_player2"
+                                style="@style/game_card"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_marginLeft="5dp"
+                                android:src="@drawable/_121" />
+
+                                <TextView
+                                    android:id="@+id/player_odds"
+                                    style="@style/odds"
+                                    android:layout_toRightOf="@id/card_player2"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_alignParentTop="true"
+                                    android:textSize="22sp"
+                                    />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.6"
+                        android:orientation="horizontal">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+                            <TextView
+                                android:id="@+id/player_name"
+                                style="@style/card_text"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_margin="5dp"
+                                android:text="Player"
+                                android:textSize="22sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/player_money"
+                                style="@style/card_text"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_margin="5dp"
+                                android:text="1500€"
+                                android:textSize="22sp" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.65"
+                        android:descendantFocusability="beforeDescendants"
+                        android:focusableInTouchMode="true"
+                        android:orientation="vertical">
+
+                        <SeekBar
+                            android:id="@+id/seekBar"
+                            style="@style/seekbar"
+                            android:layout_marginBottom="2dp"
+                            android:max="1500"
+                            android:maxHeight="15dp"
+                            android:min="40"
+                            android:splitTrack="false" />
+
+                        <TextView
+                            android:id="@+id/poker_chips"
+                            style="@style/input_chips"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginRight="20dp"
+                            android:maxWidth="80dp"
+                            android:textSize="20sp"
+                            android:text="40"/>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.35">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/fold"
+                                style="@style/game_buttons"
+                                android:text="Fold"
+                                android:textSize="20sp" />
+
+                            <Button
+                                android:id="@+id/call"
+                                style="@style/game_buttons"
+                                android:text="Call"
+                                android:textSize="20sp" />
+
+                            <Button
+                                android:id="@+id/bet"
+                                style="@style/game_buttons"
+                                android:text="Bet"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

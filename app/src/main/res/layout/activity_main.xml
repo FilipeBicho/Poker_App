@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.filipebicho.poker.MainActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background" />
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/title"
+        android:layout_marginTop="30sp"
+        android:fontFamily="@font/trade_winds"
+        android:textSize="36sp" />
+
+    <EditText
+        android:id="@+id/name"
+        style="@style/insertName"
+        android:layout_marginBottom="20sp"
+        android:fontFamily="serif"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/start"
+        style="@style/startButton"
+        android:textSize="17sp"
+        android:drawableRight="@drawable/right_arrow"/>
+
+
+</RelativeLayout>

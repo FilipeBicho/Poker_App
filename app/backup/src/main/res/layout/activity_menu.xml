@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.filipebicho.poker.Menu">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/menus" />
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/menu_list"
+        style="@style/menu_list"
+        android:dividerHeight="20dp" />
+
+</RelativeLayout>

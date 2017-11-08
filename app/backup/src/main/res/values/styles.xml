@@ -1,0 +1,154 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#063e01</item>
+        <item name="colorPrimaryDark">#0a1e01</item>
+        <item name="colorAccent">#484747</item>
+    </style>
+
+    <style name="background">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
+    <!-- Title style -->
+    <style name="title">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:text">@string/title</item>
+    </style>
+
+    <!-- Insert name box style -->
+    <style name="insertName">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:background">@drawable/insert_text</item>
+        <item name="android:paddingTop">5sp</item>
+        <item name="android:paddingBottom">5sp</item>
+        <item name="android:paddingLeft">10sp</item>
+        <item name="android:paddingRight">10sp</item>
+        <item name="android:hint">@string/hintName</item>
+        <item name="android:inputType">textAutoComplete</item>
+        <item name="android:layout_above">@id/start</item>
+    </style>
+
+    <!-- Start Button style -->
+    <style name="startButton">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:text">@string/buttonStart</item>
+        <item name="android:paddingLeft">20sp</item>
+        <item name="android:paddingRight">10sp</item>
+        <item name="android:background">@drawable/start_button</item>
+        <item name="android:drawablePadding">10sp</item>
+        <item name="android:minHeight">2sp</item>
+    </style>
+
+    <!-- List view style in Menu activity -->
+    <style name="menu_list">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:divider">@color/transparent</item>
+    </style>
+
+    <!-- Icon in option_item.xml style -->
+    <style name="icon_menu">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <!-- Text in option_item.xml style -->
+    <style name="text_menu">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Game buttons style -->
+    <style name="game_buttons">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/game_button</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+    
+    <!-- Seekbar style -->
+    <style name="seekbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:progressDrawable">@drawable/seekbar_progress</item>
+        <item name="android:thumb">@drawable/seekbar_thumb</item>
+    </style>
+
+    <!-- Chips edittext style -->
+    <style name="input_chips">
+        <item name="android:text">0</item>
+        <item name="android:paddingTop">5sp</item>
+        <item name="android:paddingBottom">5sp</item>
+        <item name="android:paddingLeft">10sp</item>
+        <item name="android:paddingRight">10sp</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/insert_text</item>
+        <item name="android:inputType">number</item>
+        <item name="android:layout_above">@+id/seekBar</item>
+    </style>
+
+    <!-- Chips edittext style -->
+    <style name="game_summary">
+        <item name="android:paddingTop">5sp</item>
+        <item name="android:paddingBottom">5sp</item>
+        <item name="android:paddingLeft">5sp</item>
+        <item name="android:paddingRight">5sp</item>
+        <item name="android:background">@drawable/insert_text</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
+    <!-- Text in game style -->
+    <style name="game_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">User VS Computer</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+    <!-- Card in game style -->
+    <style name="game_card">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">72dp</item>
+    </style>
+
+    <!-- Text around players cards style -->
+    <style name="card_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+    <!-- Text for odds at the right side of card 2 -->
+    <style name="odds">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+
+</resources>

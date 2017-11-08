@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shareInterpolator="true"
+    android:duration="500">
+
+    <!-- Menu button will increase width and decrease height in 0.7s -->
+    <translate
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:fromXDelta="0%"
+        android:toXDelta="100%"
+        android:fromYScale="0%"
+        android:toYScale="100%"
+        />
+
+</set>
