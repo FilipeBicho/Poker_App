@@ -99,14 +99,12 @@
 
     <!-- Chips edittext style -->
     <style name="input_chips">
-        <item name="android:text">0</item>
         <item name="android:paddingTop">5sp</item>
         <item name="android:paddingBottom">5sp</item>
         <item name="android:paddingLeft">10sp</item>
         <item name="android:paddingRight">10sp</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:background">@drawable/insert_text</item>
-        <item name="android:inputType">number</item>
         <item name="android:layout_above">@+id/seekBar</item>
     </style>
 
