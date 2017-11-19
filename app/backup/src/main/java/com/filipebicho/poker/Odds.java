@@ -203,7 +203,7 @@ public class Odds {
 
         int n = 0;
         // Calculate odds with all combinations between the player and opponent and table cards
-        for(int i = opponentCombinations.get(0).size()-1; i >= 1; i -= 20)
+        for(int i = opponentCombinations.get(0).size()-20; i >= 1; i -= 40)
         {
             // Opponent gets 2 cards
             opponent.set(0,opponentCombinations.get(0).get(i));
@@ -230,7 +230,7 @@ public class Odds {
             tableCombinations = getCombinations(inDeck, strInDeck);
 
             // Combinations between the 2 opponent cards all combinations to table
-            for(int j = 0; j < tableCombinations.get(0).size(); j += 20)
+            for(int j = 20; j < tableCombinations.get(0).size(); j += 40)
             {
                 // Table receives 2 cards
                 table.set(3, tableCombinations.get(0).get(j));
@@ -301,7 +301,7 @@ public class Odds {
 
         int n = 0;
         // Calculate odds with all combinations between the player and opponent and table cards
-        for(int i = opponentCombinations.get(0).size()-1; i >= 1; i -= 10)
+        for(int i = opponentCombinations.get(0).size()-1; i >= 1; i -= 30)
         {
             // Opponent gets 2 cards
             opponent.set(0,opponentCombinations.get(0).get(i));
@@ -328,7 +328,7 @@ public class Odds {
             tableCombinations = getCombinations(inDeck, strInDeck);
 
             // Combinations between the 2 opponent cards all combinations to table
-            for(int j = 0; j < tableCombinations.get(0).size(); j += 10)
+            for(int j = 0; j < tableCombinations.get(0).size(); j += 30)
             {
                 // Table receives 1 card
                 table.set(4, tableCombinations.get(1).get(j));
