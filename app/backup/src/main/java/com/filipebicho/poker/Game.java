@@ -1,31 +1,19 @@
 package com.filipebicho.poker;
 
-import java.util.concurrent.TimeUnit;
-
-import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewStructure;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 public class Game extends AppCompatActivity {
 
@@ -84,8 +72,6 @@ public class Game extends AppCompatActivity {
     private float[] initialPokerChips = new float[2];
     // Stores opponent and player bets
     private float[] bet = new float[2];
-    // Store confirmation of opponent and player to go to next round
-    private int[] confirmation = new int[2];
     // Small and bigBlind
     private int smallBlind = 20;
     private int bigBlind = 40;
@@ -101,23 +87,9 @@ public class Game extends AppCompatActivity {
     private int nGames = 0;
     // Stores opponent and player odds
     private float[] odds = new float[2];
-    // If a player made an initial bet
-    private boolean initialBet = true;
-    // If a player made an initial check
-    private boolean initialCheck = false;
 
-    // Store opponent cards
-    private ArrayList<Cards> opponentCards;
-    // Store player cards
-    private ArrayList<Cards> playerCards;
-    // Store table cards
-    private ArrayList<Cards> tableCards;
-    //Stores table cards temporarily
-    private ArrayList<Cards> tempTableCards;
-    // Store hands of both players
-    private HashMap<Integer,ArrayList<Cards>> playersHands;
-    private ArrayList<Cards> opponentHand = new ArrayList<>();
-    private  ArrayList<Cards> playerHand = new ArrayList<>();
+    // Check if its possible to make check
+    private Boolean checkFlag = true;
     // Store the result of hand evaluation
     private int[] resultHand = new int[2];
     // Store the text that goes into summary
@@ -131,6 +103,18 @@ public class Game extends AppCompatActivity {
     float tempPot;
     Boolean finish;
 
+    // Store opponent cards
+    private ArrayList<Cards> opponentCards;
+    // Store player cards
+    private ArrayList<Cards> playerCards;
+    // Store table cards
+    private ArrayList<Cards> tableCards;
+    //Stores table cards temporarily
+    private ArrayList<Cards> tempTableCards;
+    // Store hands of both players
+    private HashMap<Integer,ArrayList<Cards>> playersHands;
+    private ArrayList<Cards> opponentHand = new ArrayList<>();
+    private  ArrayList<Cards> playerHand = new ArrayList<>();
 
      // Choose the type of opponent
      private Simulator computer = new Simulator();
@@ -310,14 +294,10 @@ public class Game extends AppCompatActivity {
 
         // GET PLAYER AND OPPONENT NAME AND GAME MODE WITH GET INTENT
 
-        gameMode = 6;
-
-        Log.v("onCreate", "1");
+        gameMode = 5;
 
         // HERE GOES AN IF STATEMENT TO CHECK WHICH KIND OF GAME IS!
         initializeLayouts();
-        Log.v("onCreate", "2");
-
     }
 
     // Method to initialize Layout's
@@ -358,13 +338,11 @@ public class Game extends AppCompatActivity {
         dealerLabel.get(dealer).setVisibility(View.VISIBLE);
         // Go to pre flop
         preFlop();
-        Log.v("initializeLayouts", "End");
 
     }
 
     // Method to initialize Pre flop
-    public void preFlop()
-    {
+    public void preFlop() {
 
         // Get a deck
         Deck deck = new Deck();
@@ -374,6 +352,9 @@ public class Game extends AppCompatActivity {
         // Restart tempPot
         tempPot = 0;
 
+        // Check possibility is true
+        checkFlag = true;
+
         // Initialize cards
         opponentCards = new ArrayList<>();
         playerCards = new ArrayList<>();
@@ -381,12 +362,12 @@ public class Game extends AppCompatActivity {
         tempTableCards = new ArrayList<>();
 
         // Players get cards
-        dealer.giveCards(deck,opponentCards, playerCards);
+        dealer.giveCards(deck, opponentCards, playerCards);
 
         // Table gets already all the cards
-        dealer.giveFlop(deck,tableCards);
-        dealer.giveOneCard(deck,tableCards);
-        dealer.giveOneCard(deck,tableCards);
+        dealer.giveFlop(deck, tableCards);
+        dealer.giveOneCard(deck, tableCards);
+        dealer.giveOneCard(deck, tableCards);
 
         // Show player cards
         int playerCard1Id = getResources().getIdentifier(
@@ -403,8 +384,7 @@ public class Game extends AppCompatActivity {
         playerCardsImg.get(1).setImageResource(playerCard2Id);
 
         // If game mode is computer vs computer show also opponent cards
-        if(gameMode > 4)
-        {
+        if (gameMode > 4) {
             // Show opponent cards
             int opponentCard1Id = getResources().getIdentifier(
                     Cards.getSrcCard(opponentCards.get(0)),
@@ -419,13 +399,10 @@ public class Game extends AppCompatActivity {
                     getPackageName()
             );
             opponentCardsImg.get(1).setImageResource(opponentCard2Id);
-        }
-        else
-        {
+        } else {
             opponentCardsImg.get(0).setImageResource(R.drawable.back);
             opponentCardsImg.get(1).setImageResource(R.drawable.back);
         }
-
 
         // Hide action
         gameAction.setText("");
@@ -443,8 +420,7 @@ public class Game extends AppCompatActivity {
         // Get opponent odds
         odds[0] = (float) oddsObj.preFlopOdds(opponentCards);
         // If game mode is computer vs computer calculate also player odds and show both odds
-        if(gameMode > 4)
-        {
+        if (gameMode > 4) {
             // Get player odds
             odds[1] = (float) oddsObj.preFlopOdds(playerCards);
             oddsLabel.get(0).setText(odds[0] + " %");
@@ -463,64 +439,34 @@ public class Game extends AppCompatActivity {
 
         // Increase number of games and show in summary
         nGames++;
-        txt += "Game number: " + nGames + "\n";
+        txt += "\n------Game number: " + nGames + "-------\n\n";
         summary.setText(txt);
 
-        Log.v("\npreFlop", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
+        if (gameMode > 4) {
+            new CountDownTimer(1000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                }
 
-        // Go to bets before the flop
-        betsPreFlop();
+                public void onFinish() {
 
+                    // Go to bets before the flop
+                    betsPreFlop();
 
-        Log.v("\npreFlop", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-
+                }
+            }.start();
+        } else
+            // Go to bets before the flop
+            betsPreFlop();
     }
 
     // Method to initialize Flop
     public void flop()
     {
-        Log.v("\nFlop", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-
         // flop round
         round = 1;
 
-        // Doesn't exists initial bet
-        initialBet = false;
-        // Exist's initial check
-        initialCheck = true;
+        // It's possible to check again
+        checkFlag = true;
 
         // Stores old poker chips
         initialPokerChips[0] = pokerChips[0];
@@ -529,7 +475,7 @@ public class Game extends AppCompatActivity {
         int player = (dealer == 0) ? 1 : 0;
         reset();
         // If its computer turn
-        if(player == 0)
+        if(player == 0 || gameMode > 4)
             check_bet(player);
         else
         {
@@ -540,46 +486,17 @@ public class Game extends AppCompatActivity {
             betSeekBar.setVisibility(View.VISIBLE);
             betText.setVisibility(View.VISIBLE);
         }
-
-
-
-        Log.v("\npreFlop", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
     }
 
     // Method to initialize Turn
     public void turn()
     {
-        Log.v("\nTurn", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
 
         // turn round
         round = 2;
 
-        // Doesn't exists initial bet
-        initialBet = false;
-        // Exist's initial check
-        initialCheck = true;
+        // It's possible to check again
+        checkFlag = true;
 
         // Stores old poker chips
         initialPokerChips[0] = pokerChips[0];
@@ -589,7 +506,7 @@ public class Game extends AppCompatActivity {
 
         reset();
         // If its computer turn
-        if(player == 0)
+        if(player == 0 || gameMode > 4)
             check_bet(player);
         else
         {
@@ -600,45 +517,18 @@ public class Game extends AppCompatActivity {
             betSeekBar.setVisibility(View.VISIBLE);
             betText.setVisibility(View.VISIBLE);
         }
-
-        Log.v("\nTurn", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
 
     }
 
     // Method to initialize River
     public void river()
     {
-        Log.v("\nRiver", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
 
         // river round
         round = 3;
 
-        // Doesn't exists initial bet
-        initialBet = false;
-        // Exist's initial check
-        initialCheck = true;
+        // It's possible to check again
+        checkFlag = true;
 
         // Stores old poker chips
         initialPokerChips[0] = pokerChips[0];
@@ -648,7 +538,7 @@ public class Game extends AppCompatActivity {
 
         reset();
         // If its computer turn
-        if(player == 0)
+        if(player == 0 || gameMode > 4)
             check_bet(player);
         else
         {
@@ -659,46 +549,20 @@ public class Game extends AppCompatActivity {
             betSeekBar.setVisibility(View.VISIBLE);
             betText.setVisibility(View.VISIBLE);
         }
-
-
-        Log.v("\nRiver", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
     }
 
     // Method to make bets in pre flop
     public void betsPreFlop()
     {
-        Log.v("\nBets Pre Flop", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
 
         // Check if is first that goes to pre flop
         // If is not dealer changes position
         if(!firstPlay)
             dealer = (dealer == 0) ? 1 : 0;
         firstPlay = false;
-
+        dealer = 0;
         // Initialize blind
-        int blind = (dealer == 0) ? 1 : 0;
+        final int blind = (dealer == 0) ? 1 : 0;
 
         // Change dealer
         dealerLabel.get(dealer).setVisibility(View.VISIBLE);
@@ -742,8 +606,16 @@ public class Game extends AppCompatActivity {
                 // Update summary
                 summary.setText(txt);
 
-                // Show all cards and calculate winner
-                fiveCardsShowDown();
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        // Show all cards and calculate winner
+                        fiveCardsShowDown();
+                    }
+                }.start();
+
+
             }
             else
             {
@@ -751,11 +623,13 @@ public class Game extends AppCompatActivity {
                 bet[dealer] = smallBlind;
                 pokerChips[dealer] -= bet[dealer];
 
+                // Update bets
+                betLabel.get(0).setText(bet[0] + " €");
+                txt += "Opponent bets " + bet[0] + " €\n";
+                betLabel.get(1).setText(bet[1] + " €");
+                txt += "Player bets" + bet[1] + " €\n";
                 // Set pot
                 pokerChips[pot] = bet[dealer]+bet[blind];
-
-                // Is not initial bet anymore
-                initialBet = false;
 
                 //Update action
                 if(blind == 0)
@@ -769,8 +643,17 @@ public class Game extends AppCompatActivity {
                     txt += "Opponent pays small blind (20€)\n";
                 }
 
-                // Blind has to do all in
-                allIn(blind);
+                summary.setText(txt);
+
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        // Blind has to do all in
+                        allIn(blind);
+                    }
+                }.start();
+
 
             }
         }
@@ -807,8 +690,15 @@ public class Game extends AppCompatActivity {
             // Update summary
             summary.setText(txt);
 
-            // Show all cards and calculate winner
-            fiveCardsShowDown();
+            new CountDownTimer(500, 500) {
+                public void onTick(long millisUntilFinished) {
+                }
+                public void onFinish() {
+                    // Show all cards and calculate winner
+                    fiveCardsShowDown();
+                }
+            }.start();
+
         }
         // If both players have enough money
         else if(pokerChips[blind] > bigBlind && pokerChips[dealer] > smallBlind)
@@ -854,52 +744,36 @@ public class Game extends AppCompatActivity {
             betLabel.get(0).setText(bet[0] + " €");
             betLabel.get(1).setText(bet[1] + " €");
 
-            if(dealer == 0 || gameMode > 4)
-                // Dealer choose his bet option
-                fold_call_bet(dealer);
+            if(gameMode > 4 || dealer == 0)
+            {
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        // Dealer choose his bet option
+                        fold_call_bet(dealer);
+                    }
+                }.start();
+            }
             else
             {
                 foldButton.setVisibility(View.VISIBLE);
                 callButton.setVisibility(View.VISIBLE);
+                callButton.setText("Call");
+                checkButton = false;
                 betButton.setVisibility(View.VISIBLE);
                 betSeekBar.setVisibility(View.VISIBLE);
                 betSeekBar.isEnabled();
                 betText.setVisibility(View.VISIBLE);
             }
         }
-
-        Log.v("\nBets Pre Flop", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
     }
 
     // Method to bet all the poker chips
     public void allIn(int player)
     {
-        Log.v("\nAll in", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
 
-        int opponent = (player == 0) ? 1 : 0;
+       final int opponent = (player == 0) ? 1 : 0;
 
         float tempbet = bet[player];
 
@@ -923,12 +797,6 @@ public class Game extends AppCompatActivity {
         pokerChips[player] -= (bet[player]-tempbet);
         pokerChips[pot] = (bet[player]+ bet[opponent]);
 
-        // Opponent has to talk
-        confirmation[player] = 1;
-        confirmation[opponent] = 0;
-
-        initialBet=false;
-
         // Update summary
         summary.setText(txt);
 
@@ -938,11 +806,22 @@ public class Game extends AppCompatActivity {
         // Game its finish
         finish = true;
 
-        if(pokerChips[player] > 0)
+        // Check possibility is false
+        checkFlag = false;
+
+        if(pokerChips[opponent] > 0)
         {
            // If is computer vs computer goes directly to fold_call menu
-            if(gameMode > 4 || player == 0)
-                fold_call_bet(opponent);
+            if(gameMode > 4 || player == 1)
+            {
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        fold_call_bet(opponent);
+                    }
+                }.start();
+            }
             else
             {
                 // Show fold and call buttons
@@ -963,40 +842,16 @@ public class Game extends AppCompatActivity {
             else if (round == 3)
                 showDown();
         }
-
-        Log.v("\nAll in", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
     }
 
     // Method when exists a bet
     public void bet(int player)
     {
-        Log.v("\nBet", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
-        int opponent = (player == 0) ? 1 : 0;
 
+       final int opponent = (player == 0) ? 1 : 0;
+
+        // Check possibility is false
+        checkFlag = false;
 
         // If its computer turn or is computer vs computer
         if(player == 0 || gameMode > 4)
@@ -1008,15 +863,6 @@ public class Game extends AppCompatActivity {
             {
                 // tempBet stores old bet
                 float tempBet = bet[player];
-
-                // Get new bet
-            /*    if(betOption[1] + bet[opponent] + tempBet < pokerChips[player])
-                    bet[player] = betOption[1] + bet[opponent];
-                else
-                {
-                    bet[player] = pokerChips[player];
-                    tempBet = 0;
-                }*/
 
                 bet[player] = betOption[1]  + bet[opponent];;
 
@@ -1057,20 +903,30 @@ public class Game extends AppCompatActivity {
                     // Update summary
                     summary.setText(txt);
 
-                    // Opponent has to talk
-                    confirmation[player] = 1;
-                    confirmation[opponent] = 0;
-
-                    // It is not an initial bet anymore
-                    initialBet=false;
-
-                    if(gameMode > 4 || player == 0)
+                    if(gameMode > 4 || player == 1)
                     {
+
                         // If opponent doesn't have enough money to pay the bet
                         if(pokerChips[opponent]+bet[opponent] <=  bet[player])
-                            fold_allin(opponent);
+                        {
+                            new CountDownTimer(500, 500) {
+                                public void onTick(long millisUntilFinished) {
+                                }
+                                public void onFinish() {
+                                    fold_allin(opponent);
+                                }
+                            }.start();
+                        }
                         else
-                            fold_call_bet(opponent);
+                        {
+                            new CountDownTimer(500, 500) {
+                                public void onTick(long millisUntilFinished) {
+                                }
+                                public void onFinish() {
+                                    fold_call_bet(opponent);
+                                }
+                            }.start();
+                        }
                     }
                     else
                     {
@@ -1099,14 +955,6 @@ public class Game extends AppCompatActivity {
         {
             // tempBet stores old bet
             float tempBet = bet[player];
-
-       /*     // Get new bet
-            if(betSeekBar.getProgress() + bet[opponent] + tempBet < pokerChips[player])
-                bet[player] = betSeekBar.getProgress() + bet[opponent];
-            else {
-                bet[player] = pokerChips[player];
-                tempBet = 0;
-            }*/
 
             bet[player] = betSeekBar.getProgress() + bet[opponent];
 
@@ -1152,13 +1000,6 @@ public class Game extends AppCompatActivity {
                 // Update summary
                 summary.setText(txt);
 
-                // Opponent has to talk
-                confirmation[player] = 1;
-                confirmation[opponent] = 0;
-
-                // It is not an initial bet anymore
-                initialBet=false;
-
                 // If opponent doesn't have enough money to pay the bet
                 if(pokerChips[opponent]+bet[opponent] <=  bet[player])
                     fold_allin(opponent);
@@ -1166,40 +1007,13 @@ public class Game extends AppCompatActivity {
                     fold_call_bet(opponent);
             }
         }
-
-        Log.v("\nBet", "end");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
     }
 
     // Method when the player equals opponent bet
     public void call(int player)
     {
-        Log.v("\nCall", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
 
-        int opponent = (player == 0) ? 1 : 0;
+        final int opponent = (player == 0) ? 1 : 0;
 
         // Stores old bet
         float tempBet;
@@ -1279,21 +1093,23 @@ public class Game extends AppCompatActivity {
                 oneCardShowDown();
             else if (round == 3)
                 showDown();
-
-            initialBet = false;
         }
 
-        Log.v("Initial bet: ", initialBet + "");
-
         // If is initial call the other player has to choose an option
-        if(initialBet)
+        if(checkFlag && round == 0)
         {
-            initialCheck = false;
 
             // If its computer turn or is computer vs computer
-            if(player == 0 || gameMode > 4)
+            if(player == 1 || gameMode > 4)
             {
-                check_bet(opponent);
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        check_bet(opponent);
+                    }
+                }.start();
+
 
             }
             else
@@ -1318,43 +1134,13 @@ public class Game extends AppCompatActivity {
             if(round == 3)
                 showDown();
         }
-
-
-        Log.v("\nCall", "end");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
     }
 
     // Method to make check
     public void check(int player)
     {
-        Log.v("\nCheck", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
 
-        int opponent = (player == 0) ? 1 : 0;
-
-        confirmation[player] = 1;
+        final int opponent = (player == 0) ? 1 : 0;
 
         //Update action
         if(player == 0)
@@ -1368,20 +1154,25 @@ public class Game extends AppCompatActivity {
             txt += "Player makes check\n";
         }
 
-        Log.v("Initial bet: ", initialBet + "");
-        Log.v("Initial Check: ", initialCheck + "");
-
         // Update summary
         summary.setText(txt);
 
         // If it was the first check the opponent has to talk
-        if(initialCheck == true || initialBet == false)
+        if(checkFlag && round >0)
         {
-            initialCheck = false;
+            // It's not possible to check again
+            checkFlag = false;
+
             // if its computer
-            if(player == 0 || gameMode > 4)
+            if(player == 1 || gameMode > 4)
             {
-                check_bet(opponent);
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        check_bet(opponent);
+                    }
+                }.start();
             }
             else
             {
@@ -1404,40 +1195,11 @@ public class Game extends AppCompatActivity {
             if(round == 3)
                 showDown();
         }
-
-        Log.v("\nCheck", "end");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
     }
 
     // Method when a player makes fold
     public void fold(int player)
     {
-
-        Log.v("\nFold", "Begin");
-        Log.v("(Fold)Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
-
 
         //Update action
         if(player == 0)
@@ -1458,10 +1220,6 @@ public class Game extends AppCompatActivity {
         else
             txt += "Opponent wins " + (pokerChips[pot] + tempPot) + "\n";
 
-        // End of game
-        confirmation[0] = 1;
-        confirmation[1] = 1;
-        pokerChips[3] = 1;
         pokerChips[pot] = 0;
         finish = true;
 
@@ -1475,21 +1233,14 @@ public class Game extends AppCompatActivity {
         // Update summary
         summary.setText(txt);
 
-        Log.v("\nFold", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
+        new CountDownTimer(500, 500) {
+            public void onTick(long millisUntilFinished) {
+            }
+            public void onFinish() {
+                finalMethod();
 
-       finalMethod();
+            }
+        }.start();
 
     }
 
@@ -1497,22 +1248,6 @@ public class Game extends AppCompatActivity {
     public void check_bet(int player)
     {
         betOption = gameMode(player,gameMode,4);
-
-        Log.v("\nCheckBet", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
-        Log.v("Bet choice: ", betOption[0]+"");
-        Log.v("Bet value: ", betOption[1]+"");
 
 
         if(betOption[0] == 2)
@@ -1533,22 +1268,6 @@ public class Game extends AppCompatActivity {
                 allIn(player);
                 break;
         }
-
-        Log.v("\nCheckBet", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
-        Log.v("Bet choice: ", betOption[0]+"");
-        Log.v("Bet value: ", betOption[1]+"");
     }
 
     // Method to get option in fold call or bet with computer
@@ -1556,22 +1275,6 @@ public class Game extends AppCompatActivity {
     {
 
         betOption = gameMode(player,gameMode,5);
-
-        Log.v("\nfold_call_bet", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
-        Log.v("Bet choice: ", betOption[0]+"");
-        Log.v("Bet value: ", betOption[1]+"");
 
         if(betOption[0] == 3)
             betOption[1] = bigBlind;
@@ -1595,43 +1298,12 @@ public class Game extends AppCompatActivity {
                 allIn(player);
                 break;
         }
-        Log.v("\nfold_call_bet", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
-        Log.v("Bet choice: ", betOption[0]+"");
-        Log.v("Bet value: ", betOption[1]+"");
     }
 
     // Method to get option in fold call or bet with computer
     public void fold_allin(int player) {
 
         betOption = gameMode(player, gameMode, 2);
-
-        Log.v("\nfold_allin", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
-        Log.v("Bet choice: ", betOption[0]+"");
-        Log.v("Bet value: ", betOption[1]+"");
 
         switch (betOption[0]) {
             case 1:
@@ -1641,22 +1313,6 @@ public class Game extends AppCompatActivity {
                 call(player);
                 break;
         }
-
-        Log.v("\nfold_allin", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Player: ", player + "");
-        Log.v("Bet choice: ", betOption[0]+"");
-        Log.v("Bet value: ", betOption[1]+"");
     }
 
     // Method to update labels
@@ -1673,21 +1329,10 @@ public class Game extends AppCompatActivity {
     // Method to show flop cards
     public void showFlop()
     {
+        txt += "------- Flop -----\n";
+
         // tempPote stores pot
         tempPot += pokerChips[pot];
-
-        Log.v("\nshowFlop", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
 
         // Store odds temporarily
         float[] tempOdds = new float[3];
@@ -1696,7 +1341,10 @@ public class Game extends AppCompatActivity {
         tempTableCards.clear();
         tempTableCards.addAll(tableCards.subList(0,3));
 
-        // Get odds
+        txt += tempTableCards + "\n";
+        summary.setText(txt);
+
+                // Get odds
         tempOdds = oddsObj.oddsFlop(opponentCards,tempTableCards);
         tempTableCards.remove(3);
         tempTableCards.remove(3);
@@ -1713,6 +1361,11 @@ public class Game extends AppCompatActivity {
 
             // Opponent get odds
             odds[1] = tempOdds[1];
+
+            // Show odds
+            oddsLabel.get(0).setText(odds[0] + "%");
+            oddsLabel.get(1).setText(odds[1] + "%");
+
         }
 
         // Reset bets
@@ -1723,7 +1376,7 @@ public class Game extends AppCompatActivity {
         betLabel.get(1).setText(bet[1] + "€");
 
         // Loop through 3 cards and wait 1 second in each card
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 4; i++)
         {
             // Work around to access variable inside CountDowTimer
             final int j = i;
@@ -1732,52 +1385,31 @@ public class Game extends AppCompatActivity {
                 public void onTick(long millisUntilFinished) {}
 
                 public void onFinish() {
-                    // Show flop card
-                    int tableCard1Id = getResources().getIdentifier(
-                            Cards.getSrcCard(tableCards.get(j)),
-                            "drawable",
-                            getPackageName()
-                    );
-                    tableCardsImg.get(j).setImageResource(tableCard1Id);
 
-                    if(j==2)
+                    if(j != 3)
+                    {
+                        // Show flop card
+                        int tableCard1Id = getResources().getIdentifier(
+                                Cards.getSrcCard(tableCards.get(j)),
+                                "drawable",
+                                getPackageName()
+                        );
+                        tableCardsImg.get(j).setImageResource(tableCard1Id);
+                    }
+                    if(j==3)
                         flop();
                 }
             }.start();
         }
-
-        Log.v("\nshowFlop", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
     }
 
     // Method to show turn card
     public void showTurn()
     {
+
+        txt += "------- Turn -----\n";
         // tempPote stores pot
         tempPot += pokerChips[pot];
-
-        Log.v("\nshowTurn", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
 
         // Store odds temporarily
         float[] tempOdds = new float[3];
@@ -1785,6 +1417,9 @@ public class Game extends AppCompatActivity {
         // temp table cards gets flop cards
         tempTableCards.clear();
         tempTableCards.addAll(tableCards.subList(0,4));
+
+        txt += tempTableCards + "\n";
+        summary.setText(txt);
 
         // Get odds
         tempOdds = oddsObj.oddsTurn(opponentCards,tempTableCards);
@@ -1801,6 +1436,11 @@ public class Game extends AppCompatActivity {
 
             // Opponent get odds
             odds[1] = tempOdds[1];
+
+            // Show odds
+            oddsLabel.get(0).setText(odds[0] + "%");
+            oddsLabel.get(1).setText(odds[1] + "%");
+
         }
 
         // Reset bets
@@ -1827,49 +1467,24 @@ public class Game extends AppCompatActivity {
             }
         }.start();
 
-        Log.v("\nshowTurn", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
     }
 
     // Method to show river card
     public void showRiver()
     {
 
+        txt += "------- River -----\n";
+        txt += tableCards + "\n";
+        summary.setText(txt);
+
         // tempPote stores pot
         tempPot += pokerChips[pot];
-
-        Log.v("\nshowRiver", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
 
         // Store odds temporarily
         float[] tempOdds = new float[3];
 
-        // temp table cards gets flop cards
-        tempTableCards.clear();
-        tempTableCards.addAll(tableCards.subList(0,4));
-
         // Get odds
-        tempOdds = oddsObj.oddsRiver(opponentCards,tempTableCards);
+        tempOdds = oddsObj.oddsRiver(opponentCards,tableCards);
 
         // Opponent get odds
         odds[0] = tempOdds[1];
@@ -1877,10 +1492,16 @@ public class Game extends AppCompatActivity {
         if(gameMode > 4)
         {
             // Get odds
-            tempOdds = oddsObj.oddsRiver(playerCards,tempTableCards);
+            tempOdds = oddsObj.oddsRiver(playerCards,tableCards);
 
             // Opponent get odds
             odds[1] = tempOdds[1];
+
+
+            // Show odds
+            oddsLabel.get(0).setText(odds[0] + "%");
+            oddsLabel.get(1).setText(odds[1] + "%");
+
         }
 
 
@@ -1907,39 +1528,13 @@ public class Game extends AppCompatActivity {
 
             }
         }.start();
-
-        Log.v("\nshowRiver", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-
     }
 
     // Method to the final show down
     public void showDown()
     {
-        pokerChips[pot] += tempPot;
 
-        Log.v("\nshowDown", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
+        pokerChips[pot] += tempPot;
 
         // Object to evaluate hands
         Evaluate evaluate = new Evaluate();
@@ -1992,38 +1587,13 @@ public class Game extends AppCompatActivity {
         // Calculate winner
         calculateWinner();
 
-        Log.v("\nshowDowon", "After preFlop");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-
     }
 
     // Method to show down 1 card
     public  void oneCardShowDown()
     {
-        pokerChips[pot] += tempPot;
 
-        Log.v("\noneCardShowDown", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
+        pokerChips[pot] += tempPot;
 
         // Array to store odds in turn
         float[] turnOdds = new float[3];
@@ -2138,38 +1708,12 @@ public class Game extends AppCompatActivity {
                     calculateWinner();
             }
         }.start();
-        Log.v("\noneCardShowDown", "Before preFlop");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-
     }
 
     // Method to show down 2 cards
     public void twoCardsShowDown()
     {
         pokerChips[pot] += tempPot;
-
-        Log.v("\ntwoCardShowDown", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
 
         // Array to store odds and flop and turn
         float[] flopOdds = new float[3];
@@ -2331,37 +1875,13 @@ public class Game extends AppCompatActivity {
                 }
             }.start();
         }
-        Log.v("\ntwoCardShowDown", "Before preFlop");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
     }
 
     // Method to show down all table cards
     public void fiveCardsShowDown()
     {
-        pokerChips[pot] += tempPot;
 
-        Log.v("\nfiveCardShowDown", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
+        pokerChips[pot] += tempPot;
 
         // Array to store odds and flop and turn
         float[] flopOdds = new float[3];
@@ -2510,21 +2030,6 @@ public class Game extends AppCompatActivity {
             }.start();
         }
 
-
-        Log.v("\nfiveCardShowDown", "Before pre flop");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-
-
     }
 
     // Method final
@@ -2560,20 +2065,6 @@ public class Game extends AppCompatActivity {
         opponentHand.clear();
         playerHand.clear();
 
-
-        Log.v("\n\n FINAL", "FINAL");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-
         if(pokerChips[0] > 0 && pokerChips[1] > 0)
             preFlop();
     }
@@ -2581,21 +2072,14 @@ public class Game extends AppCompatActivity {
     // Method to calculate the winner hand
     public void calculateWinner()
     {
-        Log.v("\nCalculateWinner", "Begin");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
+
         Winner calcWinner = new Winner();
         int result;
 
+        txt += "------- Show Down -----\n";
+        txt += "Opponent: " + opponentCards + "\n";
+        txt += "Player: " + playerCards + "\n";
+        txt += "Table: " + tableCards + "\n";
         txt += "Opponent: " + opponentHand.toString() + " - " + ranking.get(0) + "\n";
         txt += "Player: " + playerHand.toString() + " - " + ranking.get(1) + "\n";
 
@@ -2658,20 +2142,6 @@ public class Game extends AppCompatActivity {
                finalMethod();
             }
         }.start();
-
-        Log.v("\nCalculateWinnter", "End");
-        Log.v("Opponent cards: ", opponentCards.toString());
-        Log.v("Player cards: ", playerCards.toString());
-        Log.v("table cards: ", tableCards.toString());
-        Log.v("Dealer: ", dealer + "");
-        Log.v("Opponente Chips: ", pokerChips[0] + "");
-        Log.v("Player Chips: ", pokerChips[1] + "");
-        Log.v("Opponente bet: ", bet[0] + "");
-        Log.v("Player bet: ", bet[1] + "");
-        Log.v("Pot: ", pokerChips[pot] + "");
-        Log.v("tempPot: ", tempPot + "");
-        Log.v("Round: ", round+"");
-        Log.v("Result: ", result + "");
     }
 
     // Get the game option
@@ -2694,12 +2164,11 @@ public class Game extends AppCompatActivity {
     // Method to reset values
     public void reset()
     {
-        // Its gonna be the first bet
-        initialBet = true;
+
+        betSeekBar.setProgress(bigBlind);
         bet[0] = 0;
         bet[1] = 0;
-        confirmation[0] = 0;
-        confirmation[1] = 0;
+
         pokerChips[pot] = 0;
         initialPokerChips[0] = pokerChips[0];
         initialPokerChips[1] =  pokerChips[1];

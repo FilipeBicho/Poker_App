@@ -87,10 +87,9 @@ public class Game extends AppCompatActivity {
     private int nGames = 0;
     // Stores opponent and player odds
     private float[] odds = new float[2];
-    // If a player made an initial bet
-    private boolean initialBet = true;
-    // If a player made an initial check
-    private boolean initialCheck = false;
+
+    // Check if its possible to make check
+    private Boolean checkFlag = true;
     // Store the result of hand evaluation
     private int[] resultHand = new int[2];
     // Store the text that goes into summary
@@ -295,7 +294,7 @@ public class Game extends AppCompatActivity {
 
         // GET PLAYER AND OPPONENT NAME AND GAME MODE WITH GET INTENT
 
-        gameMode = 6;
+        gameMode = 5;
 
         // HERE GOES AN IF STATEMENT TO CHECK WHICH KIND OF GAME IS!
         initializeLayouts();
@@ -343,8 +342,7 @@ public class Game extends AppCompatActivity {
     }
 
     // Method to initialize Pre flop
-    public void preFlop()
-    {
+    public void preFlop() {
 
         // Get a deck
         Deck deck = new Deck();
@@ -354,6 +352,9 @@ public class Game extends AppCompatActivity {
         // Restart tempPot
         tempPot = 0;
 
+        // Check possibility is true
+        checkFlag = true;
+
         // Initialize cards
         opponentCards = new ArrayList<>();
         playerCards = new ArrayList<>();
@@ -361,12 +362,12 @@ public class Game extends AppCompatActivity {
         tempTableCards = new ArrayList<>();
 
         // Players get cards
-        dealer.giveCards(deck,opponentCards, playerCards);
+        dealer.giveCards(deck, opponentCards, playerCards);
 
         // Table gets already all the cards
-        dealer.giveFlop(deck,tableCards);
-        dealer.giveOneCard(deck,tableCards);
-        dealer.giveOneCard(deck,tableCards);
+        dealer.giveFlop(deck, tableCards);
+        dealer.giveOneCard(deck, tableCards);
+        dealer.giveOneCard(deck, tableCards);
 
         // Show player cards
         int playerCard1Id = getResources().getIdentifier(
@@ -383,8 +384,7 @@ public class Game extends AppCompatActivity {
         playerCardsImg.get(1).setImageResource(playerCard2Id);
 
         // If game mode is computer vs computer show also opponent cards
-        if(gameMode > 4)
-        {
+        if (gameMode > 4) {
             // Show opponent cards
             int opponentCard1Id = getResources().getIdentifier(
                     Cards.getSrcCard(opponentCards.get(0)),
@@ -399,9 +399,7 @@ public class Game extends AppCompatActivity {
                     getPackageName()
             );
             opponentCardsImg.get(1).setImageResource(opponentCard2Id);
-        }
-        else
-        {
+        } else {
             opponentCardsImg.get(0).setImageResource(R.drawable.back);
             opponentCardsImg.get(1).setImageResource(R.drawable.back);
         }
@@ -422,8 +420,7 @@ public class Game extends AppCompatActivity {
         // Get opponent odds
         odds[0] = (float) oddsObj.preFlopOdds(opponentCards);
         // If game mode is computer vs computer calculate also player odds and show both odds
-        if(gameMode > 4)
-        {
+        if (gameMode > 4) {
             // Get player odds
             odds[1] = (float) oddsObj.preFlopOdds(playerCards);
             oddsLabel.get(0).setText(odds[0] + " %");
@@ -442,11 +439,24 @@ public class Game extends AppCompatActivity {
 
         // Increase number of games and show in summary
         nGames++;
-        txt += "Game number: " + nGames + "\n";
+        txt += "\n------Game number: " + nGames + "-------\n\n";
         summary.setText(txt);
 
-        // Go to bets before the flop
-        betsPreFlop();
+        if (gameMode > 4) {
+            new CountDownTimer(1000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                }
+
+                public void onFinish() {
+
+                    // Go to bets before the flop
+                    betsPreFlop();
+
+                }
+            }.start();
+        } else
+            // Go to bets before the flop
+            betsPreFlop();
     }
 
     // Method to initialize Flop
@@ -455,10 +465,8 @@ public class Game extends AppCompatActivity {
         // flop round
         round = 1;
 
-        // Doesn't exists initial bet
-        initialBet = false;
-        // Exist's initial check
-        initialCheck = true;
+        // It's possible to check again
+        checkFlag = true;
 
         // Stores old poker chips
         initialPokerChips[0] = pokerChips[0];
@@ -483,13 +491,12 @@ public class Game extends AppCompatActivity {
     // Method to initialize Turn
     public void turn()
     {
+
         // turn round
         round = 2;
 
-        // Doesn't exists initial bet
-        initialBet = false;
-        // Exist's initial check
-        initialCheck = true;
+        // It's possible to check again
+        checkFlag = true;
 
         // Stores old poker chips
         initialPokerChips[0] = pokerChips[0];
@@ -516,13 +523,12 @@ public class Game extends AppCompatActivity {
     // Method to initialize River
     public void river()
     {
+
         // river round
         round = 3;
 
-        // Doesn't exists initial bet
-        initialBet = false;
-        // Exist's initial check
-        initialCheck = true;
+        // It's possible to check again
+        checkFlag = true;
 
         // Stores old poker chips
         initialPokerChips[0] = pokerChips[0];
@@ -554,9 +560,9 @@ public class Game extends AppCompatActivity {
         if(!firstPlay)
             dealer = (dealer == 0) ? 1 : 0;
         firstPlay = false;
-
+        dealer = 0;
         // Initialize blind
-        int blind = (dealer == 0) ? 1 : 0;
+        final int blind = (dealer == 0) ? 1 : 0;
 
         // Change dealer
         dealerLabel.get(dealer).setVisibility(View.VISIBLE);
@@ -600,8 +606,16 @@ public class Game extends AppCompatActivity {
                 // Update summary
                 summary.setText(txt);
 
-                // Show all cards and calculate winner
-                fiveCardsShowDown();
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        // Show all cards and calculate winner
+                        fiveCardsShowDown();
+                    }
+                }.start();
+
+
             }
             else
             {
@@ -609,11 +623,13 @@ public class Game extends AppCompatActivity {
                 bet[dealer] = smallBlind;
                 pokerChips[dealer] -= bet[dealer];
 
+                // Update bets
+                betLabel.get(0).setText(bet[0] + " €");
+                txt += "Opponent bets " + bet[0] + " €\n";
+                betLabel.get(1).setText(bet[1] + " €");
+                txt += "Player bets" + bet[1] + " €\n";
                 // Set pot
                 pokerChips[pot] = bet[dealer]+bet[blind];
-
-                // Is not initial bet anymore
-                initialBet = false;
 
                 //Update action
                 if(blind == 0)
@@ -627,8 +643,17 @@ public class Game extends AppCompatActivity {
                     txt += "Opponent pays small blind (20€)\n";
                 }
 
-                // Blind has to do all in
-                allIn(blind);
+                summary.setText(txt);
+
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        // Blind has to do all in
+                        allIn(blind);
+                    }
+                }.start();
+
 
             }
         }
@@ -665,8 +690,15 @@ public class Game extends AppCompatActivity {
             // Update summary
             summary.setText(txt);
 
-            // Show all cards and calculate winner
-            fiveCardsShowDown();
+            new CountDownTimer(500, 500) {
+                public void onTick(long millisUntilFinished) {
+                }
+                public void onFinish() {
+                    // Show all cards and calculate winner
+                    fiveCardsShowDown();
+                }
+            }.start();
+
         }
         // If both players have enough money
         else if(pokerChips[blind] > bigBlind && pokerChips[dealer] > smallBlind)
@@ -712,13 +744,23 @@ public class Game extends AppCompatActivity {
             betLabel.get(0).setText(bet[0] + " €");
             betLabel.get(1).setText(bet[1] + " €");
 
-            if(dealer == 0 || gameMode > 4)
-                // Dealer choose his bet option
-                fold_call_bet(dealer);
+            if(gameMode > 4 || dealer == 0)
+            {
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        // Dealer choose his bet option
+                        fold_call_bet(dealer);
+                    }
+                }.start();
+            }
             else
             {
                 foldButton.setVisibility(View.VISIBLE);
                 callButton.setVisibility(View.VISIBLE);
+                callButton.setText("Call");
+                checkButton = false;
                 betButton.setVisibility(View.VISIBLE);
                 betSeekBar.setVisibility(View.VISIBLE);
                 betSeekBar.isEnabled();
@@ -731,7 +773,7 @@ public class Game extends AppCompatActivity {
     public void allIn(int player)
     {
 
-        int opponent = (player == 0) ? 1 : 0;
+       final int opponent = (player == 0) ? 1 : 0;
 
         float tempbet = bet[player];
 
@@ -755,8 +797,6 @@ public class Game extends AppCompatActivity {
         pokerChips[player] -= (bet[player]-tempbet);
         pokerChips[pot] = (bet[player]+ bet[opponent]);
 
-        initialBet=false;
-
         // Update summary
         summary.setText(txt);
 
@@ -766,11 +806,22 @@ public class Game extends AppCompatActivity {
         // Game its finish
         finish = true;
 
-        if(pokerChips[player] > 0)
+        // Check possibility is false
+        checkFlag = false;
+
+        if(pokerChips[opponent] > 0)
         {
            // If is computer vs computer goes directly to fold_call menu
-            if(gameMode > 4 || player == 0)
-                fold_call_bet(opponent);
+            if(gameMode > 4 || player == 1)
+            {
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        fold_call_bet(opponent);
+                    }
+                }.start();
+            }
             else
             {
                 // Show fold and call buttons
@@ -797,7 +848,10 @@ public class Game extends AppCompatActivity {
     public void bet(int player)
     {
 
-        int opponent = (player == 0) ? 1 : 0;
+       final int opponent = (player == 0) ? 1 : 0;
+
+        // Check possibility is false
+        checkFlag = false;
 
         // If its computer turn or is computer vs computer
         if(player == 0 || gameMode > 4)
@@ -849,16 +903,30 @@ public class Game extends AppCompatActivity {
                     // Update summary
                     summary.setText(txt);
 
-                    // It is not an initial bet anymore
-                    initialBet=false;
-
-                    if(gameMode > 4 || player == 0)
+                    if(gameMode > 4 || player == 1)
                     {
+
                         // If opponent doesn't have enough money to pay the bet
                         if(pokerChips[opponent]+bet[opponent] <=  bet[player])
-                            fold_allin(opponent);
+                        {
+                            new CountDownTimer(500, 500) {
+                                public void onTick(long millisUntilFinished) {
+                                }
+                                public void onFinish() {
+                                    fold_allin(opponent);
+                                }
+                            }.start();
+                        }
                         else
-                            fold_call_bet(opponent);
+                        {
+                            new CountDownTimer(500, 500) {
+                                public void onTick(long millisUntilFinished) {
+                                }
+                                public void onFinish() {
+                                    fold_call_bet(opponent);
+                                }
+                            }.start();
+                        }
                     }
                     else
                     {
@@ -932,10 +1000,6 @@ public class Game extends AppCompatActivity {
                 // Update summary
                 summary.setText(txt);
 
-
-                // It is not an initial bet anymore
-                initialBet=false;
-
                 // If opponent doesn't have enough money to pay the bet
                 if(pokerChips[opponent]+bet[opponent] <=  bet[player])
                     fold_allin(opponent);
@@ -949,7 +1013,7 @@ public class Game extends AppCompatActivity {
     public void call(int player)
     {
 
-        int opponent = (player == 0) ? 1 : 0;
+        final int opponent = (player == 0) ? 1 : 0;
 
         // Stores old bet
         float tempBet;
@@ -1029,19 +1093,23 @@ public class Game extends AppCompatActivity {
                 oneCardShowDown();
             else if (round == 3)
                 showDown();
-
-            initialBet = false;
         }
 
         // If is initial call the other player has to choose an option
-        if(initialBet)
+        if(checkFlag && round == 0)
         {
-            initialCheck = false;
 
             // If its computer turn or is computer vs computer
-            if(player == 0 || gameMode > 4)
+            if(player == 1 || gameMode > 4)
             {
-                check_bet(opponent);
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        check_bet(opponent);
+                    }
+                }.start();
+
 
             }
             else
@@ -1072,7 +1140,7 @@ public class Game extends AppCompatActivity {
     public void check(int player)
     {
 
-        int opponent = (player == 0) ? 1 : 0;
+        final int opponent = (player == 0) ? 1 : 0;
 
         //Update action
         if(player == 0)
@@ -1086,36 +1154,28 @@ public class Game extends AppCompatActivity {
             txt += "Player makes check\n";
         }
 
-        Log.v("Round: ", round + "");
-        Log.v("Dealer:",dealer+"");
-        Log.v("turn: " ,player+"");
-        Log.v("Initial bet: ", initialBet + "");
-        Log.v("Initial Check: ", initialCheck + "");
-
         // Update summary
         summary.setText(txt);
 
         // If it was the first check the opponent has to talk
-        if(initialBet == false && initialCheck == true)
+        if(checkFlag && round >0)
         {
-            Log.v("RoundIN: ", round + "");
-            Log.v("Dealer:",dealer+"");
-            Log.v("turn: " ,player+"");
-            Log.v("Initial bet: ", initialBet + "");
-            Log.v("Initial Check: ", initialCheck + "");
+            // It's not possible to check again
+            checkFlag = false;
 
-            initialCheck = false;
             // if its computer
-            if(player == 0 || gameMode > 4)
+            if(player == 1 || gameMode > 4)
             {
-                Log.v("              PC", player+"");
-
-                check_bet(opponent);
+                new CountDownTimer(500, 500) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+                    public void onFinish() {
+                        check_bet(opponent);
+                    }
+                }.start();
             }
             else
             {
-                Log.v("              HUMAN", player+"");
-
                 callButton.setText("Check");
                 checkButton = true;
                 callButton.setVisibility(View.VISIBLE);
@@ -1173,7 +1233,14 @@ public class Game extends AppCompatActivity {
         // Update summary
         summary.setText(txt);
 
-       finalMethod();
+        new CountDownTimer(500, 500) {
+            public void onTick(long millisUntilFinished) {
+            }
+            public void onFinish() {
+                finalMethod();
+
+            }
+        }.start();
 
     }
 
@@ -1262,6 +1329,8 @@ public class Game extends AppCompatActivity {
     // Method to show flop cards
     public void showFlop()
     {
+        txt += "------- Flop -----\n";
+
         // tempPote stores pot
         tempPot += pokerChips[pot];
 
@@ -1272,7 +1341,10 @@ public class Game extends AppCompatActivity {
         tempTableCards.clear();
         tempTableCards.addAll(tableCards.subList(0,3));
 
-        // Get odds
+        txt += tempTableCards + "\n";
+        summary.setText(txt);
+
+                // Get odds
         tempOdds = oddsObj.oddsFlop(opponentCards,tempTableCards);
         tempTableCards.remove(3);
         tempTableCards.remove(3);
@@ -1289,6 +1361,11 @@ public class Game extends AppCompatActivity {
 
             // Opponent get odds
             odds[1] = tempOdds[1];
+
+            // Show odds
+            oddsLabel.get(0).setText(odds[0] + "%");
+            oddsLabel.get(1).setText(odds[1] + "%");
+
         }
 
         // Reset bets
@@ -1329,6 +1406,8 @@ public class Game extends AppCompatActivity {
     // Method to show turn card
     public void showTurn()
     {
+
+        txt += "------- Turn -----\n";
         // tempPote stores pot
         tempPot += pokerChips[pot];
 
@@ -1338,6 +1417,9 @@ public class Game extends AppCompatActivity {
         // temp table cards gets flop cards
         tempTableCards.clear();
         tempTableCards.addAll(tableCards.subList(0,4));
+
+        txt += tempTableCards + "\n";
+        summary.setText(txt);
 
         // Get odds
         tempOdds = oddsObj.oddsTurn(opponentCards,tempTableCards);
@@ -1354,6 +1436,11 @@ public class Game extends AppCompatActivity {
 
             // Opponent get odds
             odds[1] = tempOdds[1];
+
+            // Show odds
+            oddsLabel.get(0).setText(odds[0] + "%");
+            oddsLabel.get(1).setText(odds[1] + "%");
+
         }
 
         // Reset bets
@@ -1386,18 +1473,18 @@ public class Game extends AppCompatActivity {
     public void showRiver()
     {
 
+        txt += "------- River -----\n";
+        txt += tableCards + "\n";
+        summary.setText(txt);
+
         // tempPote stores pot
         tempPot += pokerChips[pot];
 
         // Store odds temporarily
         float[] tempOdds = new float[3];
 
-        // temp table cards gets flop cards
-        tempTableCards.clear();
-        tempTableCards.addAll(tableCards.subList(0,4));
-
         // Get odds
-        tempOdds = oddsObj.oddsRiver(opponentCards,tempTableCards);
+        tempOdds = oddsObj.oddsRiver(opponentCards,tableCards);
 
         // Opponent get odds
         odds[0] = tempOdds[1];
@@ -1405,10 +1492,16 @@ public class Game extends AppCompatActivity {
         if(gameMode > 4)
         {
             // Get odds
-            tempOdds = oddsObj.oddsRiver(playerCards,tempTableCards);
+            tempOdds = oddsObj.oddsRiver(playerCards,tableCards);
 
             // Opponent get odds
             odds[1] = tempOdds[1];
+
+
+            // Show odds
+            oddsLabel.get(0).setText(odds[0] + "%");
+            oddsLabel.get(1).setText(odds[1] + "%");
+
         }
 
 
@@ -1440,6 +1533,7 @@ public class Game extends AppCompatActivity {
     // Method to the final show down
     public void showDown()
     {
+
         pokerChips[pot] += tempPot;
 
         // Object to evaluate hands
@@ -1498,6 +1592,7 @@ public class Game extends AppCompatActivity {
     // Method to show down 1 card
     public  void oneCardShowDown()
     {
+
         pokerChips[pot] += tempPot;
 
         // Array to store odds in turn
@@ -1785,6 +1880,7 @@ public class Game extends AppCompatActivity {
     // Method to show down all table cards
     public void fiveCardsShowDown()
     {
+
         pokerChips[pot] += tempPot;
 
         // Array to store odds and flop and turn
@@ -1980,6 +2076,10 @@ public class Game extends AppCompatActivity {
         Winner calcWinner = new Winner();
         int result;
 
+        txt += "------- Show Down -----\n";
+        txt += "Opponent: " + opponentCards + "\n";
+        txt += "Player: " + playerCards + "\n";
+        txt += "Table: " + tableCards + "\n";
         txt += "Opponent: " + opponentHand.toString() + " - " + ranking.get(0) + "\n";
         txt += "Player: " + playerHand.toString() + " - " + ranking.get(1) + "\n";
 
@@ -2064,8 +2164,8 @@ public class Game extends AppCompatActivity {
     // Method to reset values
     public void reset()
     {
-        // Its gonna be the first bet
-        initialBet = false;
+
+        betSeekBar.setProgress(bigBlind);
         bet[0] = 0;
         bet[1] = 0;
 
