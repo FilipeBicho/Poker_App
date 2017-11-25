@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.filipebicho.poker">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -25,11 +26,13 @@
 
         <activity
             android:name=".Menu"
-            android:screenOrientation="landscape">
-        </activity>
-        <activity android:name=".Game"
-            android:screenOrientation="landscape">
-        </activity>
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".Game"
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".Statistics"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

@@ -19,10 +19,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Intent game_intent = new Intent(MainActivity.this, Game.class);
-        startActivity(game_intent);
-
-      /*  // Get animation for start button
+        // Get animation for start button
         final Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.click_start);
 
@@ -67,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
          }
-        );*/
+        );
     }
 
     // This snippet hides the system bars.

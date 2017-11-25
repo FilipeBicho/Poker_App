@@ -1,5 +1,7 @@
 package com.filipebicho.poker;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -145,9 +147,10 @@ public class Simulator {
     {
         int[] betOption = new int[2];
 
+
         // Before the flop
         if(round == 0)
-            betOption = preFlop_passive(player, dealer, pokerChips, tempPote, bet, cards, menu);
+            betOption = preFlop_passive(player, dealer, pokerChips, tempPote,odds, bet, cards, menu);
         else
         {
             // Flop e turn
@@ -157,6 +160,8 @@ public class Simulator {
                 betOption = river_passive(player, dealer, pokerChips, tempPote, bet, odds, menu);
         }
 
+        Log.v("bet0: ", betOption[0]+"");
+        Log.v("bet1: ", betOption[1]+"");
 
         return betOption;
     }
@@ -169,7 +174,7 @@ public class Simulator {
 
         // Before the flop
         if(round == 0)
-            betOption = preFlop_aggressive(player, dealer, pokerChips, tempPote, bet, cards, menu);
+            betOption = preFlop_aggressive(player, dealer, pokerChips, tempPote,odds, bet, cards, menu);
         else
         {
             // Flop e turn
@@ -184,14 +189,14 @@ public class Simulator {
     }
 
     // Method to simulate a computer that just plays with good odds - Before Flop
-    private int[] preFlop_passive(int player, int dealer, float[] pokerChips, float tempPot, float[] bet, HashMap<Integer, ArrayList<Cards>> cards, int menu)
+    private int[] preFlop_passive(int player, int dealer, float[] pokerChips, float tempPot,float[] odds, float[] bet, HashMap<Integer, ArrayList<Cards>> cards, int menu)
     {
 
         int opponent = (player == 0) ? 1 : 0;
 
         int[] betOptions = new int[2];
         // Big Blind value
-        int bb = 20;
+        int bb = 40;
         // Stores converted poker chips to big blinds
         int playerStack;
         int opponentStack;
@@ -207,7 +212,6 @@ public class Simulator {
 
         // Get the group that the cards belong to
         int cardGroup = group(cards.get(player));
-
 
         int call;
         if(playerStack > 0 && opponentStack > 0)
@@ -291,7 +295,26 @@ public class Simulator {
                     }
                     // Fold or Check
                     else
-                        betOptions[0] = 1;
+                    {
+                        if(odds[player] > 40)
+                        {
+                            // menu fold_call
+                            if(menu == 5)
+                            {
+                                betOptions[0] = 2;
+                            }
+                            // menu check
+                            if(menu == 4)
+                            {
+                                betOptions[0] = 1;
+                            }
+                            //Menu fold_call
+                            if(menu == 2)
+                                betOptions[0] = 1;
+                        }
+                        else
+                            betOptions[0] = 1;
+                    }
                 }
                 // Player is blind
                 else
@@ -540,7 +563,7 @@ public class Simulator {
         int opponent = (player == 0) ? 1 : 0;
         // Store bet option
         int[] betOptions = new int[2];
-        int bb = 20;
+        int bb = 40;
         // Convert poker chips to big blinds
         int playerStack = (int)pokerChips[player] / bb;
         int opponentStack = (int)pokerChips[opponent] / bb;
@@ -560,33 +583,25 @@ public class Simulator {
         float worstGameOdds = 0;
         // Gets the sum of the odds to player improve his hand
         float improveHandOdds = 0;
-        // Stores temporally table cards
-        ArrayList<Cards> table = new ArrayList<>();
-        // Stores temporally player cards
-        ArrayList<Cards> playerCards = new ArrayList<>();
 
         // Get player hand result
         result = evaluate.evaluateHand(cards.get(player), cards.get(2));
-        table.addAll(cards.get(2));
-        playerCards.addAll(cards.get(player));
 
         // Get opponent potential hand
-        opponentHandOdds = oddsObject.opponentHand(table);
-        table.clear();
-        table.addAll(cards.get(2));
+        opponentHandOdds = oddsObject.opponentHand(cards.get(2));
+
+        // Calculate the odds of having a worst game then the opponent
+        for(int i = result+1; i< opponentHandOdds.length; i++)
+            worstGameOdds += opponentHandOdds[i];
+        worstGameOdds += opponentHandOdds[result]/2;
 
         if(round == 1)
         {
             // Get the odds of improve the hand
-            potentialHandOdds = oddsObject.potentialFlop(playerCards, table);
-            playerCards.clear();
-            table.clear();
-            table.addAll(cards.get(2));
-            playerCards.addAll(cards.get(player));
+            potentialHandOdds = oddsObject.potentialFlop(cards.get(player),cards.get(2));
 
-            // Calculate the odds of having a worst game then the opponent
-            for(int i = result; i< opponentHandOdds.length; i++)
-                worstGameOdds += opponentHandOdds[i];
+            cards.get(2).remove(3);
+            cards.get(2).remove(3);
 
             // Calculate the odds of improving the game
             for(int i = result+1; i< potentialHandOdds.length; i++)
@@ -596,20 +611,25 @@ public class Simulator {
         {
 
             // Get the odds of improve the hand
-            potentialHandOdds = oddsObject.potentialTurn(playerCards, table);
-            playerCards.clear();
-            table.clear();
-            table.addAll(cards.get(2));
-            playerCards.addAll(cards.get(player));
-
-            // Calculate the odds of having a worst game then the opponent
-            for(int i = result; i< opponentHandOdds.length; i++)
-                worstGameOdds += opponentHandOdds[i];
+            potentialHandOdds = oddsObject.potentialTurn(cards.get(player), cards.get(2));
+            cards.get(2).remove(4);
 
             // Calculate the odds of improving the game
             for(int i = result+1; i< potentialHandOdds.length; i++)
                 improveHandOdds += potentialHandOdds[i];
         }
+
+        Log.v("---- Flop & Turn ----", "--");
+        Log.v("Player cards: ", cards.get(player).toString());
+        Log.v("Table: ", cards.get(2).toString());
+        Log.v("Result: ", result+"");
+        Log.v("Odds0: ", odds[0]+"");
+        Log.v("Odds of opponent wins: ", worstGameOdds + "");
+        Log.v("Odds improve hand", improveHandOdds + "");
+        Log.v("Pot: ", pot+"");
+        Log.v("Call: ", call +"");
+        Log.v("Player Stack : ", playerStack+"");
+        Log.v("Opponent Stack : ", opponentStack+"");
 
         // If opponent didn't bet
         if(call == 0 )
@@ -946,7 +966,7 @@ public class Simulator {
     {
         int opponent = (player == 0) ? 1 : 0;
         int[] betOptions = new int[2];
-        int bb = 20;
+        int bb = 40;
         // Convert poker chips to big blinds
         int playerStack = (int)pokerChips[player] / bb;
         int opponentStack = (int)pokerChips[opponent] / bb;
@@ -956,6 +976,13 @@ public class Simulator {
         float call = (bet[opponent] - bet[player]);
         // Store pot odds value
         float potOdds;
+
+        Log.v("---- River ----", "--");
+        Log.v("Odds0: ", odds[0]+"");
+        Log.v("Pot: ", pot+"");
+        Log.v("Call: ", call +"");
+        Log.v("Player Stack : ", playerStack+"");
+        Log.v("Opponent Stack : ", opponentStack+"");
 
         // If there is no bets
         if(call == 0 )
@@ -1135,11 +1162,11 @@ public class Simulator {
     }
 
     // Method to simulate a computer that plays aggressive - Before Flop
-    private int[] preFlop_aggressive(int player, int dealer, float[] pokerChips, float tempPot, float[] bet, HashMap<Integer, ArrayList<Cards>> cards, int menu)
+    private int[] preFlop_aggressive(int player, int dealer, float[] pokerChips, float tempPot, float[] odds, float[] bet, HashMap<Integer, ArrayList<Cards>> cards, int menu)
     {
         int opponent = (player == 0) ? 1 : 0;
         int[] betOptions = new int[2];
-        int bb = 20;
+        int bb = 40;
         int playerStack;
         int opponentStack;
         if(pokerChips[player] > bb)
@@ -1157,6 +1184,10 @@ public class Simulator {
             call = (int)(bet[opponent] - bet[player]);
         else
             call = 0;
+
+        Log.v("Odds:", odds[player]+"");
+        Log.v("Cards: ", cards.get(player).toString());
+        Log.v("Grupo: ", cardGroup+"");
 
         // Opponent didn't raise
         if(call <= bb)
@@ -1218,7 +1249,21 @@ public class Simulator {
                     }
                     // Fold / check
                     else
-                        betOptions[0] = 1;
+                    {
+                        // menu fold_call
+                        if(menu == 5)
+                        {
+                            betOptions[0] = 2;
+                        }
+                        // menu check
+                        if(menu == 4)
+                        {
+                            betOptions[0] = 1;
+                        }
+                        //Menu fold_call
+                        if(menu == 2)
+                            betOptions[0] = 1;
+                    }
                 }
                 // player is blind
                 else
@@ -1466,7 +1511,7 @@ public class Simulator {
     {
         int opponent = (player == 0) ? 1 : 0;
         int[] betOptions = new int[2];
-        int bb = 20;
+        int bb = 40;
         int playerStack = (int)pokerChips[player] / bb;
         int opponentStack = (int)pokerChips[opponent] / bb;
         // Pot value
@@ -1484,33 +1529,25 @@ public class Simulator {
         float worstGameOdds = 0;
         // Stores temporally player cards
         float improveHandOdds = 0;
-        // Stores temporally table cards
-        ArrayList<Cards> table = new ArrayList<>();
-        // Stores temporally player cards
-        ArrayList<Cards> playerCards = new ArrayList<>();
+
 
         // Get player hand result
         result = evaluate.evaluateHand(cards.get(player), cards.get(2));
-        table.addAll(cards.get(2));
-        playerCards.addAll(cards.get(player));
 
         // Get opponent potential hand
-        opponentHandOdds = oddsObject.opponentHand(table);
-        table.clear();
-        table.addAll(cards.get(2));
+        opponentHandOdds = oddsObject.opponentHand(cards.get(2));
+
+        // Calculate the odds of having a worst game then the opponent
+        for(int i = result+1; i< opponentHandOdds.length; i++)
+            worstGameOdds += opponentHandOdds[i];
+        worstGameOdds += opponentHandOdds[result]/2;
 
         if(round == 1)
         {
             // Get the odds of improve the hand
-            potentialHandOdds = oddsObject.potentialFlop(playerCards, table);
-            playerCards.clear();
-            table.clear();
-            table.addAll(cards.get(2));
-            playerCards.addAll(cards.get(player));
-
-            // Calculate the odds of having a worst game then the opponent
-            for(int i = result; i< opponentHandOdds.length; i++)
-                worstGameOdds += opponentHandOdds[i];
+            potentialHandOdds = oddsObject.potentialFlop(cards.get(player), cards.get(2));
+            cards.get(2).remove(3);
+            cards.get(2).remove(3);
 
             // Calculate the odds of improving the game
             for(int i = result+1; i< potentialHandOdds.length; i++)
@@ -1520,15 +1557,8 @@ public class Simulator {
         {
 
             // Get the odds of improve the hand
-            potentialHandOdds = oddsObject.potentialTurn(playerCards, table);
-            playerCards.clear();
-            table.clear();
-            table.addAll(cards.get(2));
-            playerCards.addAll(cards.get(player));
-
-            // Calculate the odds of having a worst game then the opponent
-            for(int i = result; i< opponentHandOdds.length; i++)
-                worstGameOdds += opponentHandOdds[i];
+            potentialHandOdds = oddsObject.potentialTurn(cards.get(player), cards.get(2));
+            cards.get(2).remove(4);
 
             // Calculate the odds of improving the game
             for(int i = result+1; i< potentialHandOdds.length; i++)
@@ -1870,7 +1900,7 @@ public class Simulator {
     {
         int opponent = (player == 0) ? 1 : 0;
         int[] betOptions = new int[2];
-        int bb = 20;
+        int bb = 40;
         int playerStack = (int)pokerChips[player] / bb;
         int opponentStack = (int)pokerChips[opponent] / bb;
         // Pot value

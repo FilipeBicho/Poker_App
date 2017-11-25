@@ -148,5 +148,25 @@
         <item name="android:textColor">#FFF</item>
     </style>
 
+    <!-- Text in statistics -->
+    <style name="text_statistics">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+    <!-- Number in statistics -->
+    <style name="number_statistics">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1.1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FFF</item>
+
+    </style>
+
 
 </resources>

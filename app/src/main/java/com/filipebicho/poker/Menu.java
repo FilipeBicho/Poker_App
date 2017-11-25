@@ -27,10 +27,11 @@ public class Menu extends AppCompatActivity {
 
         // Get the user name
         Intent intent = getIntent();
-        String name = intent.getExtras().getString("userName");
+        final String name = intent.getExtras().getString("userName");
 
-        // Create an explicit intent to go to game activity
+        // Create an explicit intent to go to game and statistics activities
         final Intent game_intent = new Intent(Menu.this, Game.class);
+        final Intent statistics_intent = new Intent(Menu.this, Statistics.class);
 
         // Create and initialize the list of game options
         final ArrayList<MenuOption> menuItem = new ArrayList<>();
@@ -104,24 +105,36 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
 
-                // Get the MenuOption object at the given position the user clicked on
-                final MenuOption item = menuItem.get(position);
+            // Get the MenuOption object at the given position the user clicked on
+            final MenuOption item = menuItem.get(position);
 
-                // Get MenuOption LinearLayout
-                final LinearLayout item_layout = (LinearLayout)view.findViewById(R.id.menu_layout);
-                item_layout.startAnimation(animation);
+            // Get MenuOption LinearLayout
+            final LinearLayout item_layout = (LinearLayout)view.findViewById(R.id.menu_layout);
+            item_layout.startAnimation(animation);
 
-                // Wait 0.3s before go the the new activity
-                Runnable r = new Runnable()
+            // Wait 0.3s before go the the new activity
+            Runnable r = new Runnable()
+            {
+                public void run()
                 {
-                    public void run()
+
+                    if(position == 10)
+                    {
+                        statistics_intent.putExtra("userName",name);
+                        startActivity(statistics_intent);
+
+                    }
+                    else
                     {
                         // Pass the game option that the user choosed
                         game_intent.putExtra("game_mode",position + "");
+                        game_intent.putExtra("userName",name);
                         startActivity(game_intent);
+
                     }
-                };
-                view.postDelayed(r, 300);
+                }
+            };
+            view.postDelayed(r, 300);
 
             }
         });

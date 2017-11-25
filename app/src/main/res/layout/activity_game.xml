@@ -212,7 +212,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dp"
                         android:layout_centerVertical="true"
                         android:text="Pot"
                         android:textColor="#FFF" />
@@ -222,7 +221,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="20dp"
                         android:layout_below="@id/pot_str"
                         android:text="0 €"
                         android:textColor="#FFF" />
@@ -296,7 +294,7 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.4">
+                            android:layout_weight="0.38">
 
                             <ImageView
                                 android:id="@+id/card_river"

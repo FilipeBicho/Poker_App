@@ -21,7 +21,7 @@ public class Cards {
     final String[] suitArray = {"\u2665", "\u2666", "\u2663", "\u2660"};
 
     // Initialize card
-    Cards(int rank, int suit) {
+    public Cards(int rank, int suit) {
         this.rank = rank;
         this.suit = suit;
     }

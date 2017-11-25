@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.filipebicho.poker.Statistics">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/statistics_background" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_statistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="casual"
+            android:gravity="center_horizontal"
+            android:text="User Statistics"
+            android:textColor="#FFF"
+            android:textSize="30sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#FFF" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/text_statistics"
+                android:fontFamily="casual"
+                android:text="Most Played cards" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7">
+
+                <ImageView
+                    android:id="@+id/most_played_card1"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/back"/>
+
+                <ImageView
+                    android:id="@+id/most_played_card2"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/back"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/most_played"
+                style="@style/number_statistics"
+                android:fontFamily="casual"
+                android:text="0" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#FFF" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/text_statistics"
+                android:fontFamily="casual"
+                android:gravity="center_vertical"
+                android:text="Most winning cards" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7">
+
+                <ImageView
+                    android:id="@+id/most_winning_card1"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/back"/>
+
+                <ImageView
+                    android:id="@+id/most_winning_card2"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/card_flop1"
+                    android:src="@drawable/back"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/most_winning"
+                style="@style/number_statistics"
+                android:fontFamily="casual"
+                android:text="0" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#FFF" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/text_statistics"
+                android:fontFamily="casual"
+                android:gravity="center_vertical"
+                android:text="Biggest hand" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7">
+
+                <ImageView
+                    android:id="@+id/biggest_hand_card1"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/back"/>
+
+                <ImageView
+                    android:id="@+id/biggest_hand_card2"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/back"/>
+                <ImageView
+                    android:id="@+id/biggest_hand_card3"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/back"/>
+
+                <ImageView
+                    android:id="@+id/biggest_hand_card4"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/back"/>
+                <ImageView
+                    android:id="@+id/biggest_hand_card5"
+                    style="@style/game_card"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/back"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/biggest_hand"
+                style="@style/number_statistics"
+                android:fontFamily="casual"
+                android:text="Full House" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#FFF" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+
+            <TextView
+                android:id="@+id/number_games"
+                style="@style/text_statistics"
+                android:text="Played 0 games"
+                android:gravity="center"
+                />
+            <TextView
+                android:id="@+id/number_wins"
+                style="@style/text_statistics"
+                android:text="Won 0 games"
+                android:gravity="center"
+
+                />
+            <TextView
+                android:id="@+id/games_percentage"
+                style="@style/number_statistics"
+                android:text="You won 0.0% of the games"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
