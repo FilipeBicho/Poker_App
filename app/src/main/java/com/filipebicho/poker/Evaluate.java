@@ -10,31 +10,31 @@ import java.util.Map;
  * Name: Filipe Andre de Matos Bicho
  * Last update: 27/10/2017
  */
-public class Evaluate {
+class Evaluate {
 
 	// ArrayList to stores the final hand (Player cards + Table cards - 5 cards)
-	private ArrayList<Cards> hand = new ArrayList<>();
+	private final ArrayList<Cards> hand = new ArrayList<>();
 
 	// ArrayList to stores all cards (Player cards + Table cards - 5 to 7 cards)
-	private ArrayList<Cards> cards = new ArrayList<>();
+	private final ArrayList<Cards> cards = new ArrayList<>();
 
 	// ArrayList to store cards rank
-	ArrayList<Integer> rank = new ArrayList<>();
+	private final ArrayList<Integer> rank = new ArrayList<>();
 
 	// ArrayList to store cards suit
-	ArrayList<Integer> suit = new ArrayList<>();
+	private final ArrayList<Integer> suit = new ArrayList<>();
 
 	// Declare HashMap to store rank repetitions
-	HashMap<Integer, Integer> rankRepetitions = new HashMap<Integer, Integer>();
+	private final HashMap<Integer, Integer> rankRepetitions = new HashMap<Integer, Integer>();
 
 	// Declare HashMap to store suit repetitions
-	HashMap<Integer, Integer> suitRepetitions = new HashMap<Integer, Integer>();
+	private final HashMap<Integer, Integer> suitRepetitions = new HashMap<Integer, Integer>();
 
-	final String RANK = "rank";
-	final String SUIT = "suit";
+	private final String RANK = "rank";
+	private final String SUIT = "suit";
 
 	// Save Result
-	String result = "";
+	private String result = "";
 
 	// Main method to analyze in which rank a hand belongs to
 	public int evaluateHand (ArrayList<Cards> player, ArrayList<Cards> table)
@@ -94,7 +94,7 @@ public class Evaluate {
 	}
 
 	// Put player cards and table cards together
-	public void joinCards(ArrayList<Cards> player, ArrayList<Cards> table)
+	private void joinCards(ArrayList<Cards> player, ArrayList<Cards> table)
 	{
 		cards.addAll(0, player);
 		cards.addAll(cards.size(), table);
@@ -508,7 +508,20 @@ public class Evaluate {
 
 			// If it has 2 pairs just add a kicker
 			if(Integer.valueOf(keys.size()).equals(2))
+			{
+			    if(hand.get(2).getRank() == 0)
+			    {
+                    ArrayList<Cards> temp = new ArrayList<>();
+                    temp.addAll(hand);
+                    hand.clear();
+                    hand.add(temp.get(2));
+                    hand.add(temp.get(3));
+                    hand.add(temp.get(0));
+                    hand.add(temp.get(1));
+                }
+
 				kicker();
+			}
 			// If it has 3 pairs then have to delete 2 and check if one pair is an Ace
 			else
 			{
@@ -587,7 +600,7 @@ public class Evaluate {
 	 *  Method to discovery repetition on the cards
 	 *  Method important to check pair, 2 pair, 3 of kind, 4 of a kind and flush
 	 */
-	public void getRepetitions()
+	private void getRepetitions()
 	{
 		// Get rank repetitions
 		for(Integer count : rank)
@@ -600,7 +613,7 @@ public class Evaluate {
 
 	// Get the rank of the card that has repetitions
 	@SuppressWarnings("rawtypes")
-	public ArrayList<Integer> getKey(int value, HashMap<Integer,Integer> repetitions)
+	private ArrayList<Integer> getKey(int value, HashMap<Integer, Integer> repetitions)
 	{
 
 		ArrayList<Integer> key= new ArrayList<>();
@@ -616,7 +629,7 @@ public class Evaluate {
 	// Method to get cards that match the rank
 
 	// Set the hand cards
-	public void setHandCards(int key, String type, ArrayList<Cards> cards)
+	private void setHandCards(int key, String type, ArrayList<Cards> cards)
 	{
 
 		if(type.equals("suit"))
@@ -641,7 +654,7 @@ public class Evaluate {
 	}
 
 	// Method to get a kicker card
-	public void kicker()
+	private void kicker()
 	{
 		ArrayList<Cards> others = new ArrayList<>();
 

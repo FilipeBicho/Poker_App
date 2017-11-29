@@ -17,7 +17,6 @@ public class Statistics extends AppCompatActivity {
     private TextView numberOfGamesLabel;
     private TextView numberOfWinningGamesLabel;
     private TextView percentageWinningLabel;
-    private TextView titleStatistics;
 
     private ArrayList<ImageView> mostPlayedCardsLabel;
     private ArrayList<ImageView> mostWinningCardsLabel;
@@ -38,9 +37,7 @@ public class Statistics extends AppCompatActivity {
     private int numberOfGames;
     private int numberOfWinningGames;
 
-    private String userName;
-
-    SetStatistics statistics;
+    private SetStatistics statistics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -49,22 +46,22 @@ public class Statistics extends AppCompatActivity {
 
         // Get the user name
         Intent intent = getIntent();
-        userName = intent.getExtras().getString("userName");
+        String userName = intent.getExtras().getString("userName");
 
         // Initialize title statistics with user name
-        titleStatistics = (TextView) findViewById(R.id.title_statistics);
+        TextView titleStatistics = findViewById(R.id.title_statistics);
         titleStatistics.setText(userName + " Statistics");
 
         // Initialize SetStatistics class
         statistics = new SetStatistics(userName);
 
         // Initialize TextViews
-        mostPlayed = (TextView) findViewById(R.id.most_played);
-        mostWinnings = (TextView) findViewById(R.id.most_winning);
-        biggestHand = (TextView) findViewById(R.id.biggest_hand);
-        numberOfGamesLabel = (TextView) findViewById(R.id.number_games);
-        numberOfWinningGamesLabel = (TextView) findViewById(R.id.number_wins);
-        percentageWinningLabel = (TextView) findViewById(R.id.games_percentage);
+        mostPlayed = findViewById(R.id.most_played);
+        mostWinnings = findViewById(R.id.most_winning);
+        biggestHand = findViewById(R.id.biggest_hand);
+        numberOfGamesLabel = findViewById(R.id.number_games);
+        numberOfWinningGamesLabel = findViewById(R.id.number_wins);
+        percentageWinningLabel = findViewById(R.id.games_percentage);
 
         // Initialize ImageViews
 
@@ -118,7 +115,7 @@ public class Statistics extends AppCompatActivity {
     }
 
 
-    public void showStatistics()
+    private void showStatistics()
     {
         int max = 0, maxIndexMostPlayed = 0, maxIndexMostWinning = 0;
 

@@ -10,11 +10,12 @@
         android:id="@+id/icon"
         style="@style/icon_menu"
         android:paddingBottom="10dp"
-        android:paddingLeft="30dp" />
+        android:paddingLeft="30sp"
+        android:contentDescription="background"/>
 
     <TextView
         android:id="@+id/text"
         style="@style/text_menu"
-        android:textSize="30dp" />
+        android:textSize="30sp" />
 
 </LinearLayout>

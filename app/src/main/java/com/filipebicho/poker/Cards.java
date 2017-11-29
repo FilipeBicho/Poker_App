@@ -9,16 +9,17 @@ import java.util.Comparator;
  */
 public class Cards {
 
-    private int rank, suit;
+    private final int rank;
+    private final int suit;
 
     /* Array because the size of the array is already known
      * It is final because this array can�t be changed
      */
-    final String[] rankArray = {"A", "2", "3", "4", "5", "6", "7", "8",
+    private final String[] rankArray = {"A", "2", "3", "4", "5", "6", "7", "8",
             "9", "10", "J", "Q", "K"};
 
     // Hearts, Diamonds, Clubs, Spades
-    final String[] suitArray = {"\u2665", "\u2666", "\u2663", "\u2660"};
+    private final String[] suitArray = {"\u2665", "\u2666", "\u2663", "\u2660"};
 
     // Initialize card
     public Cards(int rank, int suit) {
@@ -43,7 +44,7 @@ public class Cards {
     }
 
     /*Comparator to sort card by rank*/
-    public static Comparator<Cards> sortRank = new Comparator<Cards>() {
+    public static final Comparator<Cards> sortRank = new Comparator<Cards>() {
 
         public int compare(Cards card1, Cards card2) {
 

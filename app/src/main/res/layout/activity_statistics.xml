@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/statistics_background" />
+        android:src="@drawable/statistics_background"
+        android:contentDescription="background"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,14 +53,16 @@
                     style="@style/game_card"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="layed1"/>
 
                 <ImageView
                     android:id="@+id/most_played_card2"
                     style="@style/game_card"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="played2"/>
             </LinearLayout>
 
             <TextView
@@ -95,7 +98,8 @@
                     style="@style/game_card"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="winning1"/>
 
                 <ImageView
                     android:id="@+id/most_winning_card2"
@@ -103,7 +107,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
                     android:layout_toRightOf="@+id/card_flop1"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="winning2"/>
             </LinearLayout>
 
             <TextView
@@ -139,33 +144,38 @@
                     style="@style/game_card"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="hand1"/>
 
                 <ImageView
                     android:id="@+id/biggest_hand_card2"
                     style="@style/game_card"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="hand2"/>
                 <ImageView
                     android:id="@+id/biggest_hand_card3"
                     style="@style/game_card"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="hand3"/>
 
                 <ImageView
                     android:id="@+id/biggest_hand_card4"
                     style="@style/game_card"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="hand4"/>
                 <ImageView
                     android:id="@+id/biggest_hand_card5"
                     style="@style/game_card"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:src="@drawable/back"/>
+                    android:src="@drawable/back"
+                    android:contentDescription="hand5"/>
 
             </LinearLayout>
 

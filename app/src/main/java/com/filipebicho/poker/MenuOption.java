@@ -4,16 +4,16 @@ package com.filipebicho.poker;
  * Created by Flip on 04/11/2017.
  */
 
-public class MenuOption {
+class MenuOption {
 
     // Store the menu icon
-    private int menuIcon;
+    private final int menuIcon;
 
     // Store the menu name
-    private String menuName;
+    private final String menuName;
 
     // Store the menu background
-    private int menuBackground;
+    private final int menuBackground;
 
     // Constructor to receive the menu elements
     MenuOption(int menuIcon, String menuName, int menuBackground)

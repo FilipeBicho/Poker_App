@@ -9,12 +9,12 @@ import java.util.Random;
  * Name: Filipe Andre de Matos Bicho
  * Last update: 27/10/2017
  */
-public class Deck {
+class Deck {
 
     /* ArrayList because the array changes size constantly
     *  and to get the first card of the deck through the index takes O(1)
     */
-    private ArrayList<Cards> card;
+    private final ArrayList<Cards> card;
 
     //Constructor to initialize the deck and shuffle them
     Deck()

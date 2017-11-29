@@ -11,10 +11,10 @@ import java.util.HashMap;
  * Last update: 27/10/2017
  */
 
-public class Simulator {
+class Simulator {
 
-    private Evaluate evaluate = new Evaluate();
-    private Odds oddsObject = new Odds();
+    private final Evaluate evaluate = new Evaluate();
+    private final Odds oddsObject = new Odds();
 
     /* Mathematically Fair Strategy - MFS
      * W - odds of winning
@@ -411,7 +411,7 @@ public class Simulator {
                             if(pokerChips[player] > 4*call)
                             {
                                 betOptions[0] = 4;
-                                betOptions[1] = (int) (4*call);
+                                betOptions[1] = 4*call;
                             }
                             else
                                 betOptions[0] = menu;
@@ -440,7 +440,7 @@ public class Simulator {
                                 if(pokerChips[player] > 4*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (4*call);
+                                    betOptions[1] = 4*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -452,7 +452,7 @@ public class Simulator {
                                 if(pokerChips[player] > 2*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (2*call);
+                                    betOptions[1] = 2*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -481,7 +481,7 @@ public class Simulator {
                                 if(pokerChips[player] > 4*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (4*call);
+                                    betOptions[1] = 4*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -493,7 +493,7 @@ public class Simulator {
                                 if(pokerChips[player] > 2*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (2*call);
+                                    betOptions[1] = 2*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -522,7 +522,7 @@ public class Simulator {
                                 if(pokerChips[player] > 4*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (4*call);
+                                    betOptions[1] = 4*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -534,7 +534,7 @@ public class Simulator {
                                 if(pokerChips[player] > 2*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (2*call);
+                                    betOptions[1] = 2*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -1352,7 +1352,7 @@ public class Simulator {
                             if(pokerChips[player] > 5*call)
                             {
                                 betOptions[0] = 4;
-                                betOptions[1] = (int) (5*call);
+                                betOptions[1] = 5*call;
                             }
                             else
                                 betOptions[0] = menu;
@@ -1380,7 +1380,7 @@ public class Simulator {
                                 if(pokerChips[player] > 6*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (6*call);
+                                    betOptions[1] = 6*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -1394,7 +1394,7 @@ public class Simulator {
                                 if(pokerChips[player] > 3*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (3*call);
+                                    betOptions[1] = 3*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -1424,7 +1424,7 @@ public class Simulator {
                                 if(pokerChips[player] > 4*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (4*call);
+                                    betOptions[1] = 4*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -1439,7 +1439,7 @@ public class Simulator {
                                 if(pokerChips[player] > 2*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (2*call);
+                                    betOptions[1] = 2*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -1468,7 +1468,7 @@ public class Simulator {
                                 if(pokerChips[player] > 5*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (5*call);
+                                    betOptions[1] = 5*call;
                                 }
                                 else
                                     betOptions[0] = menu;
@@ -1481,7 +1481,7 @@ public class Simulator {
                                 if(pokerChips[player] > 3*call)
                                 {
                                     betOptions[0] = 4;
-                                    betOptions[1] = (int) (3*call);
+                                    betOptions[1] = 3*call;
                                 }
                                 else
                                     betOptions[0] = menu;

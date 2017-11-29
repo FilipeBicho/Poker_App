@@ -15,24 +15,24 @@ import java.util.ArrayList;
  * Created by Flip on 25/11/2017.
  */
 
-public class SetStatistics {
+class SetStatistics {
 
-    private ArrayList<Cards> mostPlayedCards1;
-    private ArrayList<Cards> mostPlayedCards2;
-    private ArrayList<Integer> mostPlayedCardsCounter;
+    private final ArrayList<Cards> mostPlayedCards1;
+    private final ArrayList<Cards> mostPlayedCards2;
+    private final ArrayList<Integer> mostPlayedCardsCounter;
 
-    private ArrayList<Cards> mostWinningCards1;
-    private ArrayList<Cards> mostWinningCards2;
-    private ArrayList<Integer> mostWinningCardsCounter;
+    private final ArrayList<Cards> mostWinningCards1;
+    private final ArrayList<Cards> mostWinningCards2;
+    private final ArrayList<Integer> mostWinningCardsCounter;
 
-    private ArrayList<Cards> biggestHandCards;
+    private final ArrayList<Cards> biggestHandCards;
     private String biggestHandRanking;
     private int biggestHandResult;
 
     private int numberOfGames;
     private int numberOfWinningGames;
 
-    private String userName;
+    private final String userName;
 
     public SetStatistics( String userName)
     {
@@ -100,7 +100,7 @@ public class SetStatistics {
                 try {
                     outputWriter.close();
                 }catch (IOException e){
-
+                    Log.e("Error", e.toString());
                 }
             }
         }
@@ -142,6 +142,7 @@ public class SetStatistics {
                 try {
                     outputWriter.close();
                 }catch (IOException e){
+                    Log.e("Error", e.toString());
 
                 }
             }
@@ -183,7 +184,7 @@ public class SetStatistics {
                 try {
                     outputWriter.close();
                 }catch (IOException e){
-
+                    Log.e("Error", e.toString());
                 }
             }
         }
@@ -213,7 +214,7 @@ public class SetStatistics {
                 try {
                     outputWriter.close();
                 }catch (IOException e){
-
+                    Log.e("Error", e.toString());
                 }
             }
         }
@@ -372,7 +373,7 @@ public class SetStatistics {
     }
 
     // Read most played cards from file
-    public void readMostPlayedCards()
+    private void readMostPlayedCards()
     {
 
         // Get path of the folder
@@ -452,7 +453,7 @@ public class SetStatistics {
     }
 
     // Read most played cards from file
-    public void readMostWinningCards()
+    private void readMostWinningCards()
     {
         // Get path of the folder
         String path = "/data/data/com.filipebicho.poker/files/" + userName;
@@ -530,7 +531,7 @@ public class SetStatistics {
     }
 
     // Read biggest hand from file
-    public void readBiggestHandCards()
+    private void readBiggestHandCards()
     {
         // Get path of the folder
         String path = "/data/data/com.filipebicho.poker/files/" + userName;
@@ -608,7 +609,7 @@ public class SetStatistics {
     }
 
     // Read total of games and winning games
-    public void readTotalOfGames()
+    private void readTotalOfGames()
     {
         // Get path of the folder
         String path = "/data/data/com.filipebicho.poker/files/" + userName;

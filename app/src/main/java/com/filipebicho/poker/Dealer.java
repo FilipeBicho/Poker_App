@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Name: Filipe Andre de Matos Bicho
  * Last update: 27/10/2017
  */
-public class Dealer {
+class Dealer {
 
     // Give cards to the players, cards are given alternately to each player
     public void giveCards(Deck deck, ArrayList<Cards> player1, ArrayList<Cards> player2)

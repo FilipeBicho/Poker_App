@@ -1,7 +1,6 @@
 package com.filipebicho.poker;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
                 R.anim.click_start);
 
         // Get EditText with user name
-        final EditText userName = (EditText) findViewById(R.id.name);
+        final EditText userName = findViewById(R.id.name);
 
         // Create the action when start button is clicked
         final Button start = findViewById(R.id.start);

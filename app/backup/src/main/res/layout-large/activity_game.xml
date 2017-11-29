@@ -1,10 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <ImageView
         style="@style/background"
-        android:src="@drawable/game" />
+        android:src="@drawable/game"
+        />
 
 
     <LinearLayout
@@ -139,9 +141,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1">
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6">
 
                             <ImageView
                                 android:id="@+id/opponent_dealer"

@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Name: Filipe Andre de Matos Bicho
  * Last update: 28/10/2017
  */
-public class Winner {
+class Winner {
 
     /* Method to calculate which player wins
     * if return 1, player 1 wins, 2 player 2 winds, 0 draw

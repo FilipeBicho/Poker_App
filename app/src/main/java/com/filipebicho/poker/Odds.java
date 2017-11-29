@@ -13,35 +13,35 @@ import java.util.HashMap;
  * Name: Filipe Andre de Matos Bicho
  * Last update: 30/10/2017
  */
-public class Odds {
+class Odds {
 
     // Store the unused cards of the deck
-    private ArrayList<Cards> inDeck = new ArrayList<>();
+    private final ArrayList<Cards> inDeck = new ArrayList<>();
     // Store all cards that came already out of the deck
-    private ArrayList<Cards> outDeck = new ArrayList<>();
+    private final ArrayList<Cards> outDeck = new ArrayList<>();
     // Store all table cards combinations without repetitions
     private HashMap<Integer, ArrayList<Cards>> tableCombinations = new HashMap<>();
     // Store all opponent cards combinations without repetitions
     private HashMap<Integer, ArrayList<Cards>> opponentCombinations = new HashMap<>();
     // Stores players hands
-    private ArrayList<Cards> hand1 = new ArrayList<>();
-    private ArrayList<Cards> hand2 = new ArrayList<>();
+    private final ArrayList<Cards> hand1 = new ArrayList<>();
+    private final ArrayList<Cards> hand2 = new ArrayList<>();
     // Stores opponent cards
-    private ArrayList<Cards> opponent = new ArrayList<>();
+    private final ArrayList<Cards> opponent = new ArrayList<>();
     // Object to evaluate player hands
-    private Evaluate evaluate = new Evaluate();
+    private final Evaluate evaluate = new Evaluate();
     // Object to calculate winning hand
-    private Winner calculate = new Winner();
+    private final Winner calculate = new Winner();
     //Store all cards that came already out of the deck as Strings
-    private ArrayList<String> strOutDeck = new ArrayList<>();
+    private final ArrayList<String> strOutDeck = new ArrayList<>();
     //Store the 45 unused cards of the deck as String
-    private ArrayList<String> strInDeck = new ArrayList<>();
+    private final ArrayList<String> strInDeck = new ArrayList<>();
     // Store the results of both hands
-    private int[] result = new int[2];
+    private final int[] result = new int[2];
     // Store the odds of Victory, Draw and Losing
-    private float[] odds = new float[3];
+    private final float[] odds = new float[3];
     // Store the odds of coming a hand in the missing table cards
-    private float[] potentialHand = new float[11];
+    private final float[] potentialHand = new float[11];
 
 
 
@@ -103,7 +103,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / tableCombinations.get(0).size();
+            odds[i] = odds[i] / tableCombinations.get(0).size();
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -161,7 +161,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / inDeck.size();
+            odds[i] = odds[i] / inDeck.size();
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -260,7 +260,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / n;
+            odds[i] = odds[i] / n;
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -357,7 +357,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / n;
+            odds[i] = odds[i] / n;
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -425,7 +425,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / n;
+            odds[i] = odds[i] / n;
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -477,7 +477,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < potentialHand.length; i++)
         {
-            potentialHand[i] = (float) potentialHand[i] / n;
+            potentialHand[i] = potentialHand[i] / n;
             potentialHand[i] = roundOdds(potentialHand[i]);
         }
 
@@ -524,7 +524,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < potentialHand.length; i++)
         {
-            potentialHand[i] = (float) potentialHand[i] / n;
+            potentialHand[i] = potentialHand[i] / n;
             potentialHand[i] = roundOdds(potentialHand[i]);
         }
 
@@ -573,7 +573,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < potentialHand.length; i++)
         {
-            potentialHand[i] = (float) potentialHand[i] / n;
+            potentialHand[i] = potentialHand[i] / n;
             potentialHand[i] = roundOdds(potentialHand[i]);
         }
 
@@ -1538,7 +1538,7 @@ public class Odds {
     // Method to round odds to 2 numbers
     private float roundOdds(float num)
     {
-        num = (float) num * 100;
+        num = num * 100;
         num = Math.round(num * 100);
         return num /= 100;
     }

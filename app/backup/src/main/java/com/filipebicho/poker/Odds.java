@@ -103,7 +103,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / tableCombinations.get(0).size();
+            odds[i] = odds[i] / tableCombinations.get(0).size();
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -161,7 +161,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / inDeck.size();
+            odds[i] = odds[i] / inDeck.size();
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -260,7 +260,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / n;
+            odds[i] = odds[i] / n;
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -357,7 +357,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / n;
+            odds[i] = odds[i] / n;
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -425,7 +425,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < odds.length; i++)
         {
-            odds[i] = (float) odds[i] / n;
+            odds[i] = odds[i] / n;
             odds[i] = roundOdds(odds[i]);
         }
 
@@ -477,7 +477,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < potentialHand.length; i++)
         {
-            potentialHand[i] = (float) potentialHand[i] / n;
+            potentialHand[i] = potentialHand[i] / n;
             potentialHand[i] = roundOdds(potentialHand[i]);
         }
 
@@ -524,7 +524,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < potentialHand.length; i++)
         {
-            potentialHand[i] = (float) potentialHand[i] / n;
+            potentialHand[i] = potentialHand[i] / n;
             potentialHand[i] = roundOdds(potentialHand[i]);
         }
 
@@ -573,7 +573,7 @@ public class Odds {
         // Convert odds results
         for(int i = 0; i < potentialHand.length; i++)
         {
-            potentialHand[i] = (float) potentialHand[i] / n;
+            potentialHand[i] = potentialHand[i] / n;
             potentialHand[i] = roundOdds(potentialHand[i]);
         }
 
@@ -1538,7 +1538,7 @@ public class Odds {
     // Method to round odds to 2 numbers
     private float roundOdds(float num)
     {
-        num = (float) num * 100;
+        num = num * 100;
         num = Math.round(num * 100);
         return num /= 100;
     }

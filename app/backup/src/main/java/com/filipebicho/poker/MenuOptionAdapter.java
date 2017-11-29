@@ -45,15 +45,15 @@ public class MenuOptionAdapter extends ArrayAdapter<MenuOption>{
         MenuOption currentItem = getItem(position);
 
         // Find the LinearLayout in the option_item.xml layout
-        LinearLayout option_background = (LinearLayout) listItemView.findViewById(R.id.menu_layout);
+        LinearLayout option_background = listItemView.findViewById(R.id.menu_layout);
         option_background.setBackgroundResource(currentItem.getMenuBackground());
 
         // Find the ImageView in the option_item.xml layout
-        ImageView option_icon = (ImageView) listItemView.findViewById(R.id.icon);
+        ImageView option_icon = listItemView.findViewById(R.id.icon);
         option_icon.setImageResource(currentItem.getMenuIcon());
 
         // Find the TextView in the option_item.xml layout
-        TextView option_text = (TextView) listItemView.findViewById(R.id.text);
+        TextView option_text = listItemView.findViewById(R.id.text);
         option_text.setText(currentItem.getMenuName());
 
         // Return the whole list item layout (containing 2 TextView) so that it can be show in the

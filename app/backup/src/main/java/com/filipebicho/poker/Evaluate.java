@@ -1,5 +1,7 @@
 package com.filipebicho.poker;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -508,7 +510,20 @@ public class Evaluate {
 
 			// If it has 2 pairs just add a kicker
 			if(Integer.valueOf(keys.size()).equals(2))
+			{
+			    if(hand.get(2).getRank() == 0)
+			    {
+                    ArrayList<Cards> temp = new ArrayList<>();
+                    temp.addAll(hand);
+                    hand.clear();
+                    hand.add(temp.get(2));
+                    hand.add(temp.get(3));
+                    hand.add(temp.get(0));
+                    hand.add(temp.get(1));
+                }
+
 				kicker();
+			}
 			// If it has 3 pairs then have to delete 2 and check if one pair is an Ace
 			else
 			{

@@ -4,12 +4,14 @@
 
     <ImageView
         style="@style/background"
-        android:src="@drawable/game" />
+        android:src="@drawable/game"
+        android:contentDescription="background"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:contentDescription="Background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,9 +27,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_marginEnd="11dp"
                     android:layout_marginRight="11dp"
                     android:layout_weight="1">
@@ -102,7 +101,8 @@
                                 style="@style/game_card"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginRight="5dp"
-                                android:src="@drawable/back" />
+                                android:src="@drawable/back"
+                                android:contentDescription="card1Opponent"/>
 
                             <TextView
                                 android:id="@+id/opponent_odds"
@@ -122,7 +122,8 @@
                                 style="@style/game_card"
                                 android:layout_alignParentLeft="true"
                                 android:layout_marginLeft="5dp"
-                                android:src="@drawable/back" />
+                                android:src="@drawable/back"
+                                android:contentDescription="card2Opponent"/>
 
                         </RelativeLayout>
                     </LinearLayout>
@@ -137,17 +138,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1">
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6">
-
                             <ImageView
                                 android:id="@+id/opponent_dealer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
                                 android:src="@drawable/dealer"
-                                android:visibility="invisible"/>
+                                android:visibility="invisible"
+                                android:contentDescription="dealerChipOpponent"/>
 
                             <TextView
                                 style="@style/card_text"
@@ -260,21 +258,24 @@
                                 style="@style/game_card"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
-                                android:layout_marginLeft="10dp"/>
+                                android:layout_marginLeft="10dp"
+                                android:contentDescription="flop1"/>
 
                             <ImageView
                                 android:id="@+id/card_flop2"
                                 style="@style/game_card"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="15dp"
-                                android:layout_toRightOf="@+id/card_flop1"/>
+                                android:layout_toRightOf="@+id/card_flop1"
+                                android:contentDescription="flop2"/>
 
                             <ImageView
                                 android:id="@+id/card_flop3"
                                 style="@style/game_card"
                                 android:layout_centerVertical="true"
                                 android:layout_marginLeft="15dp"
-                                android:layout_toRightOf="@+id/card_flop2"/>
+                                android:layout_toRightOf="@+id/card_flop2"
+                                android:contentDescription="flop3"/>
 
 
                         </RelativeLayout>
@@ -288,7 +289,8 @@
                                 android:id="@+id/card_turn"
                                 style="@style/game_card"
                                 android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true" />
+                                android:layout_centerVertical="true"
+                                android:contentDescription="turn" />
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -300,7 +302,8 @@
                                 android:id="@+id/card_river"
                                 style="@style/game_card"
                                 android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true" />
+                                android:layout_centerVertical="true"
+                                android:contentDescription="river"/>
                         </RelativeLayout>
                     </LinearLayout>
 
@@ -398,7 +401,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
                                 android:src="@drawable/dealer"
-                                android:visibility="invisible"/>
+                                android:visibility="invisible"
+                                android:contentDescription="dealerChipPlayer"/>
 
                             <TextView
                                 style="@style/card_text"
@@ -439,7 +443,8 @@
                                 style="@style/game_card"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginRight="5dp"
-                                android:src="@drawable/back" />
+                                android:src="@drawable/back"
+                                android:contentDescription="card1Player"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -452,7 +457,8 @@
                                 style="@style/game_card"
                                 android:layout_alignParentLeft="true"
                                 android:layout_marginLeft="5dp"
-                                android:src="@drawable/back" />
+                                android:src="@drawable/back"
+                                android:contentDescription="card2Player"/>
 
                             <TextView
                                 android:id="@+id/player_odds"

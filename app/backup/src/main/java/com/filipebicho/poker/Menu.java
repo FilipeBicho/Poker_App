@@ -95,7 +95,7 @@ public class Menu extends AppCompatActivity {
         MenuOptionAdapter adapter = new MenuOptionAdapter(this, menuItem);
 
         // Attach the adapter to a list
-        ListView listView = (ListView) findViewById(R.id.menu_list);
+        ListView listView = findViewById(R.id.menu_list);
 
         // Set the adapter
         listView.setAdapter(adapter);
@@ -109,7 +109,7 @@ public class Menu extends AppCompatActivity {
             final MenuOption item = menuItem.get(position);
 
             // Get MenuOption LinearLayout
-            final LinearLayout item_layout = (LinearLayout)view.findViewById(R.id.menu_layout);
+            final LinearLayout item_layout = view.findViewById(R.id.menu_layout);
             item_layout.startAnimation(animation);
 
             // Wait 0.3s before go the the new activity
